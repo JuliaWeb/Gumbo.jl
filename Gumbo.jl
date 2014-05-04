@@ -1,7 +1,7 @@
 module Gumbo
 
-# immutable types corresponding to structs from
-# gumbo.h
+# immutable types corresponding to structs from gumbo.h
+# also various enums from gumbo.h
 
 immutable Vector  # Gumbo vector
     data::Ptr{Ptr{Void}}
@@ -232,5 +232,7 @@ const TAGS = [:HTML,
               :tt,
               :unknown
               ]
+
+end
 
 end

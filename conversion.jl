@@ -1,9 +1,3 @@
-module HTML
-
-import Gumbo
-
-include("htmltypes.jl")
-
 function parsehtml(input::String; strict=false)
     result_ptr = ccall((:gumbo_parse,"libgumbo"),
                        Ptr{Gumbo.Output},
@@ -34,8 +28,6 @@ gvector_to_jl(T,gv::Gumbo.Vector) = pointer_to_array(convert(Ptr{Ptr{T}},gv.data
 
 # convert a vector of pointers to GumboAttributes to
 # a Dict String => String
-# note that there is probably an implicit conversion
-# from Ptr{Void} happening when this is called
 function attributes(av::Vector{Ptr{Gumbo.Attribute}})
     result = Dict{String,String}()
     for ptr in av
@@ -49,7 +41,7 @@ function element(ge::Gumbo.Element)
     tag = Gumbo.TAGS[ge.tag+1]  # +1 is for 1-based julia indexing
     attrs = attributes(gvector_to_jl(Gumbo.Attribute,ge.attributes))
     # TODO extract text separately
-    children = Element[]
+    children = HTMLElement[]
     text = ""
     for nodeptr in gvector_to_jl(Gumbo.Node,ge.children)
         node::Gumbo.Node = unsafe_load(nodeptr)
@@ -60,7 +52,7 @@ function element(ge::Gumbo.Element)
         end
         # TODO handle CDATA, comments, etc.
     end
-    Element{tag}(children, text, attrs)
+    HTMLElement{tag}(children, text, attrs)
 end
 
 
@@ -79,8 +71,5 @@ function document_from_gumbo(goutput::Gumbo.Output)
     end
     grootnode::Gumbo.Node = unsafe_load(goutput.root)
     root = element(grootnode.v)  # already an element
-    Document(doctype, root)
-end
-
-
+    HTMLDocument(doctype, root)
 end

@@ -1,12 +1,12 @@
-type Element{T}
-    children::Vector{Element}
+type HTMLElement{T}
+    children::Vector{HTMLElement}
     text::String
     attributes::Dict{String, String}
 end
 
-type Document
+type HTMLDocument
     doctype::String
-    root::Element
+    root::HTMLElement
 end
 
 type InvalidHTMLException <: Exception
