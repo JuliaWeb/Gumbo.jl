@@ -1,5 +1,6 @@
 type Element{T}
     children::Vector{Element}
+    text::Vector{String}
     attributes::Dict
 end
 
