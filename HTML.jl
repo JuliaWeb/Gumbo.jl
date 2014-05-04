@@ -50,13 +50,13 @@ function element(ge::Gumbo.Element)
     attrs = attributes(gvector_to_jl(Gumbo.Attribute,ge.attributes))
     # TODO extract text separately
     children = Element[]
-    text = String[]
+    text = ""
     for nodeptr in gvector_to_jl(Gumbo.Node,ge.children)
         node::Gumbo.Node = unsafe_load(nodeptr)
         if node.gntype == Gumbo.ELEMENT
             push!(children, element(node.v))  # already a GumboElement
         elseif node.gntype == Gumbo.TEXT
-            push!(text, bytestring(reinterpret(Gumbo.Text,node.v).text))
+            text *=bytestring(reinterpret(Gumbo.Text,node.v).text)
         end
         # TODO handle CDATA, comments, etc.
     end

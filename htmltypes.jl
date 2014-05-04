@@ -1,7 +1,7 @@
 type Element{T}
     children::Vector{Element}
-    text::Vector{String}
-    attributes::Dict
+    text::String
+    attributes::Dict{String, String}
 end
 
 type Document
