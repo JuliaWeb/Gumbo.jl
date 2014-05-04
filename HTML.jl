@@ -14,7 +14,14 @@ function parsehtml(input::String; strict=false)
     if strict && goutput.errors.length > 0
         throw(InvalidHTMLException("input html was invalid"))
     end
-    document_from_gumbo(goutput)
+    doc = document_from_gumbo(goutput)
+    gumbo_dl = dlopen("libgumbo")
+    default_options = dlsym(gumbo_dl, :kGumboDefaultOptions)
+    ccall((:gumbo_destroy_output,"libgumbo"),
+          Void,
+          (Ptr{Void}, Ptr{Gumbo.Output}),
+          default_options, result_ptr)
+    return doc
 end
 
 
