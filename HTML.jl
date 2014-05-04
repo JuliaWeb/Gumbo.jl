@@ -72,14 +72,14 @@ function document_from_gumbo(goutput::Gumbo.Output)
         error("Document appears to have incorrent GumboNodeType")
     end
     gdoc = reinterpret(Gumbo.Document,gnode.v)
-    name = bytestring(gdoc.name)
+    doctype = bytestring(gdoc.name)
     groot::Gumbo.Node = unsafe_load(goutput.root)
     if groot.gntype != Gumbo.ELEMENT  # should always be true
         error("root appears to have wrong GumboNodeType")
     end
     grootnode::Gumbo.Node = unsafe_load(goutput.root)
     root = element(grootnode.v)  # already an element
-    Document(name, root)
+    Document(doctype, root)
 end
 
 

@@ -5,10 +5,9 @@ type Element{T}
 end
 
 type Document
-    name::String
+    doctype::String
     root::Element
 end
-
 
 type InvalidHTMLException <: Exception
     msg::String
