@@ -23,8 +23,8 @@ end
 
 linesof{T}(elem::HTMLElement{T}) = @task linesof(elem,0)
 
-linesof(t::HTMLText) = t.text
-linesof(t::HTMLText,depth) = t.text
+linesof(t::HTMLText) = produce((0,t.text))
+linesof(t::HTMLText,depth) = produce((depth,t.text))
 
 function show{T}(io::IO, elem::HTMLElement{T}, maxlines)
     maxdepth = Inf
