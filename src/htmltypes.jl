@@ -16,6 +16,9 @@ type InvalidHTMLException <: Exception
     msg::String
 end
 
+
+## IO for element
+
 # linesof(elem) returns a task. consuming from this task
 # yields returns tuples of (depth, line), where depth is tree
 # depth and line is a pretty string representing the line
@@ -70,4 +73,25 @@ function Base.print(io::IO, elem::HTMLElement)
     for (depth,line) in linesof(elem)
         write(io, line)
     end
+end
+
+
+### IO for Document
+
+function Base.show(io::IO, doc::HTMLDocument)
+    write(io, "HTML Document:\n")
+    write(io, "<!DOCTYPE $(doc.doctype)>\n")
+    Base.show(io, doc.root)
+end
+
+function Base.showall(io::IO, doc::HTMLDocument)
+    write(io, "HTML Document:\n")
+    write(io, "<!DOCTYPE $(doc.doctype)>\n")
+    Base.showall(io, doc.root)
+end
+
+
+function Base.print(io::IO, doc::HTMLDocument)
+    write(io, "<!DOCTYPE $doc.doctype>")
+    Base.print(io, doc.root)
 end
