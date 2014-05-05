@@ -49,6 +49,10 @@ function Base.showall(io::IO, elem::HTMLElement)
     show(io, elem, Inf)
 end
 
+function Base.showcompact(io::IO, elem::HTMLElement)
+    write(io,summary(elem))
+end
+
 # print just writes all the lines to io
 function Base.print(io::IO, elem::HTMLElement)
     for (depth,line) in linesof(elem)
