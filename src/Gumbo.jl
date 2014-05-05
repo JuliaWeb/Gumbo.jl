@@ -234,5 +234,3 @@ const TAGS = [:HTML,
               ]
 
 end
-
-end
