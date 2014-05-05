@@ -40,19 +40,17 @@ end
 function element(ge::Gumbo.Element)
     tag = Gumbo.TAGS[ge.tag+1]  # +1 is for 1-based julia indexing
     attrs = attributes(gvector_to_jl(Gumbo.Attribute,ge.attributes))
-    # TODO extract text separately
-    children = HTMLElement[]
-    text = ""
+    children = HTMLNode[]
     for nodeptr in gvector_to_jl(Gumbo.Node,ge.children)
         node::Gumbo.Node = unsafe_load(nodeptr)
         if node.gntype == Gumbo.ELEMENT
             push!(children, element(node.v))  # already a GumboElement
         elseif node.gntype == Gumbo.TEXT
-            text *=bytestring(reinterpret(Gumbo.Text,node.v).text)
+            push!(children,HTMLText(bytestring(reinterpret(Gumbo.Text,node.v).text)))
         end
         # TODO handle CDATA, comments, etc.
     end
-    HTMLElement{tag}(children, text, attrs)
+    HTMLElement{tag}(children, attrs)
 end
 
 

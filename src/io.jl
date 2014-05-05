@@ -10,13 +10,10 @@ function linesof{T}(elem::HTMLElement{T},depth::Int)
     end
     opentag *= ">"
     closetag = "</$T>"
-    if isempty(elem.children) && isempty(elem.text)
+    if isempty(elem.children)
         produce((depth,opentag * closetag))
     else
         produce((depth,opentag))
-        if !isempty(elem.text)
-            produce((depth+1, elem.text)) # TODO this could be full of \n\n\n
-        end
         for child in elem.children
             linesof(child,depth+1)
         end
@@ -25,6 +22,9 @@ function linesof{T}(elem::HTMLElement{T},depth::Int)
 end
 
 linesof{T}(elem::HTMLElement{T}) = @task linesof(elem,0)
+
+linesof(t::HTMLText) = t.text
+linesof(t::HTMLText,depth) = t.text
 
 function show{T}(io::IO, elem::HTMLElement{T}, maxlines)
     maxdepth = Inf
@@ -54,6 +54,12 @@ function Base.print(io::IO, elem::HTMLElement)
     for (depth,line) in linesof(elem)
         write(io, line)
     end
+end
+
+### IO for Text
+
+function Base.show(io::IO, t::HTMLText)
+    write(io,"HTML Text: t.text")
 end
 
 
