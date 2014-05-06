@@ -1,6 +1,6 @@
 module GumboParser
 
-import Gumbo
+include("Gumbo.jl")
 
 # TODO export HTMLNode?
 export HTMLElement,
