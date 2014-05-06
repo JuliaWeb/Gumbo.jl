@@ -18,10 +18,10 @@ let
     y = HTMLElement(:div)
     @test x == y
     @test hash(x) == hash(y)
-    push!(children(x), HTMLElement(:p))
+    push!(x, HTMLElement(:p))
     @test x != y
     @test hash(x) != hash(y)
-    push!(children(y), HTMLElement(:p))
+    push!(y, HTMLElement(:p))
     @test x == y
     @test hash(x) == hash(y)
     setattr!(x,"class","test")

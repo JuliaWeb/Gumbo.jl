@@ -16,6 +16,6 @@ let
     end
     @test page.doctype == "html"
     root = page.root
-    @test tag(root.children[1].children[1]) == :meta
-    @test root.children[2].children[1].children[1].text == "A simple test page."
+    @test tag(root[1][1]) == :meta
+    @test root[2][1][1].text == "A simple test page."
 end
