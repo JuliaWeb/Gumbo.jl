@@ -27,12 +27,11 @@ linesof(t::HTMLText) = produce((0,t.text))
 linesof(t::HTMLText,depth) = produce((depth,t.text))
 
 function show{T}(io::IO, elem::HTMLElement{T}, maxlines)
-    maxdepth = Inf
     for (i,(depth, line)) in enumerate(linesof(elem))
-        if i + depth >= maxlines && maxdepth == Inf
-            write(io,repeat("  ",depth)*". . . \n")
-            maxdepth = depth
-        elseif depth < maxdepth
+        if i == maxlines
+            write(io,". . . \n")
+            return
+        else
             write(io,repeat("  ",depth)*line*"\n")
         end
     end
