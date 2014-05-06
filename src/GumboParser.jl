@@ -7,6 +7,9 @@ export HTMLElement,
        HTMLDocument,
        HTMLText,
        tag,
+       children,
+       getattr,
+       setattr!,
        parsehtml
 
 include("htmltypes.jl")

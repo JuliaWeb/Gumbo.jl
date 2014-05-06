@@ -20,8 +20,8 @@ end
 function Base.hash{T}(elem::HTMLElement{T})
     h = hash(HTMLElement)
     h = bitmix(h,hash(T))
-    h = bitmix(h,hash(elem.attributes))
-    for child in elem.children
+    h = bitmix(h,hash(attrs(elem)))
+    for child in children(elem)
         h = bitmix(h,hash(child))
     end
     return h
