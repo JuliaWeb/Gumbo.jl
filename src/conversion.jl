@@ -37,22 +37,26 @@ function attributes(av::Vector{Ptr{Gumbo.Attribute}})
     return result
 end
 
-function element(ge::Gumbo.Element)
+function element(parent::HTMLNode, ge::Gumbo.Element)
     tag = Gumbo.TAGS[ge.tag+1]  # +1 is for 1-based julia indexing
+    # TODO when tag is unknown get out actual tag ??
     attrs = attributes(gvector_to_jl(Gumbo.Attribute,ge.attributes))
     children = HTMLNode[]
+    res = HTMLElement{tag}(children, parent, attrs)
     for nodeptr in gvector_to_jl(Gumbo.Node,ge.children)
         node::Gumbo.Node = unsafe_load(nodeptr)
         if node.gntype == Gumbo.ELEMENT
-            push!(children, element(node.v))  # already a GumboElement
+            push!(children, element(res, node.v))  # already a GumboElement
         elseif node.gntype == Gumbo.TEXT
-            push!(children,HTMLText(bytestring(reinterpret(Gumbo.Text,node.v).text)))
+            push!(children,HTMLText(res,
+                                    bytestring(reinterpret(Gumbo.Text,node.v).text)))
         end
         # TODO handle CDATA, comments, etc.
     end
-    HTMLElement{tag}(children, attrs)
+    res
 end
 
+element(ge::Gumbo.Element) = element(NullNode(), ge)
 
 # transform gumbo output into Julia data
 function document_from_gumbo(goutput::Gumbo.Output)
