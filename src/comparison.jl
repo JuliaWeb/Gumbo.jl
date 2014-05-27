@@ -1,5 +1,12 @@
 # comparison functions for HTML Nodes and Documents
 
+# TODO right now hashing and equality completely ignore
+# parents. I think this is *probably* appropriate but it deserves
+# some more thought. There's an argument that two HTMLElements with
+# the same contents and children but different parent pointers are not
+# really equal. Perhaps an auxilliary equality function could be provided
+# for this purpose?
+
 # equality
 
 Base.isequal(x::HTMLDocument, y::HTMLDocument) =
