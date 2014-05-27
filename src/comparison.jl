@@ -10,6 +10,14 @@ Base.isequal(x::HTMLText,y::HTMLText) = isequal(x.text, y.text)
 Base.isequal(x::HTMLElement, y::HTMLElement) =
     isequal(x.attributes,y.attributes) && isequal(x.children,y.children)
 
+==(x::HTMLDocument, y::HTMLDocument) =
+    ==(x.doctype,y.doctype) && ==(x.root,y.root)
+
+==(x::HTMLText,y::HTMLText) = ==(x.text, y.text)
+
+==(x::HTMLElement, y::HTMLElement) =
+    ==(x.attributes,y.attributes) && ==(x.children,y.children)
+
 
 # hashing
 
