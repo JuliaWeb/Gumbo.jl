@@ -2,10 +2,11 @@ module GumboParser
 
 include("Gumbo.jl")
 
-# TODO export HTMLNode?
 export HTMLElement,
        HTMLDocument,
        HTMLText,
+       NullNode,
+       HTMLNode,
        tag,
        children,
        getattr,
