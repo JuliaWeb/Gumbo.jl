@@ -62,7 +62,7 @@ end
 ### IO for Text
 
 function Base.show(io::IO, t::HTMLText)
-    write(io,"HTML Text: t.text")
+    write(io,"HTML Text: $(t.text)")
 end
 
 
