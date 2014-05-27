@@ -29,18 +29,18 @@ Base.isequal(x::HTMLElement, y::HTMLElement) =
 # hashing
 
 function Base.hash(doc::HTMLDocument)
-    bitmix(hash(HTMLDocument),bitmix(hash(doc.doctype), hash(doc.root)))
+    hash(hash(HTMLDocument),hash(hash(doc.doctype), hash(doc.root)))
 end
 
 function Base.hash{T}(elem::HTMLElement{T})
     h = hash(HTMLElement)
-    h = bitmix(h,hash(T))
-    h = bitmix(h,hash(attrs(elem)))
+    h = hash(h,hash(T))
+    h = hash(h,hash(attrs(elem)))
     for child in children(elem)
-        h = bitmix(h,hash(child))
+        h = hash(h,hash(child))
     end
     return h
 end
 
 
-Base.hash(t::HTMLText) = bitmix(hash(HTMLText),hash(t.text))
+Base.hash(t::HTMLText) = hash(hash(HTMLText),hash(t.text))
