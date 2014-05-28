@@ -13,7 +13,10 @@ export HTMLElement,
        children,
        getattr,
        setattr!,
-       parsehtml
+       parsehtml,
+       postorder,
+       preorder,
+       breadthfirst
 
 include("htmltypes.jl")
 include("manipulation.jl")
