@@ -4,3 +4,4 @@ using GumboParser
 include("basics.jl")
 include("comparison.jl")
 include("parsing.jl")
+include("traversal.jl")
