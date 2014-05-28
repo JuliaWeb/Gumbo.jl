@@ -65,6 +65,9 @@ function Base.show(io::IO, t::HTMLText)
     write(io,"HTML Text: $(t.text)")
 end
 
+function Base.print(io::IO, t::HTMLText)
+    write(io,"$(t.text)")
+end
 
 ### IO for Document
 
