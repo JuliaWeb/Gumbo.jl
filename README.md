@@ -183,6 +183,58 @@ Just as with `HTMLElement`s, the parent of an instance so constructed
 will be a `NullNode`.
 
 
+## Tree traversal
+
+There are three methods for iterating over HTML trees: `postorder`,
+`preorder`, and `breadthfirst`. These return instances of iterator
+types that can be iterated over to yield the children of the passed
+element in the specified order. For example:
+
+```julia
+julia> doc = parsehtml("""
+       <html>
+         <body>
+           <div>
+             <p/> <a/> <p/>
+           </div>
+           <div>
+              <span/>
+           </div>
+          </body>
+       </html>
+       """);
+
+julia> for elem in preorder(doc.root)
+         println(tag(elem))
+       end
+HTML
+head
+body
+div
+p
+a
+p
+a
+a
+div
+span
+
+julia> for elem in postorder(doc.root)
+         println(tag(elem))
+       end
+head
+a
+p
+a
+p
+div
+span
+div
+a
+body
+HTML
+```
+
 ## TODOS
 
 - support CDATA
