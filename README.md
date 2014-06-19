@@ -30,10 +30,10 @@ Read on for further documentation.
 
 ## Installation
 
-On Unix systems you *should* be able to do:
+On Unix systems with autotools you *should* be able to do:
 
 ```
-Pkg.clone("https://github.com/porterjamesj/Gumbo.jl.git")
+Pkg.clone("Gumbo")
 Pkg.build("Gumbo")
 ```
 
