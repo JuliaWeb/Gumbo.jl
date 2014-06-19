@@ -14,6 +14,6 @@ provides(Binaries, URI("http://sourceforge.net/projects/juliadeps-win/files/gumb
 
 provides(BuildProcess,
          Autotools(libtarget="libgumbo.la"),
-         libgumbo)
+         libgumbo, os = :Unix)
 
 @BinDeps.install [:libgumbo => :libgumbo]
