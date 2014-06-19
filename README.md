@@ -31,7 +31,7 @@ Read on for further documentation.
 
 ## Installation
 
-On Unix systems with autotools you *should* be able to do:
+You *should* be able to do:
 
 ```
 Pkg.clone("Gumbo")
@@ -40,9 +40,6 @@ Pkg.build("Gumbo")
 
 Please file an issue if the build script fails for you; it has not yet
 been extensively tested.
-
-Windows is not yet supported, mostly due to the difficulty of building
-the gumbo C library on non-Unix platforms.
 
 ## Basic usage
 
