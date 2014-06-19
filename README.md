@@ -239,4 +239,3 @@ HTML
 ## TODOS
 
 - support CDATA
-- support Windows
