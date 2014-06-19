@@ -1,2 +1,5 @@
-lib*
-include
+deps/usr
+deps/builds
+deps/downloads
+deps/src
+deps/deps.jl

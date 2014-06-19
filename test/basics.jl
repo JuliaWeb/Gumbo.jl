@@ -1,6 +1,6 @@
 # tests of basic utilities for working with HTML
 
-import GumboParser: HTMLNode, NullNode
+import Gumbo: HTMLNode, NullNode
 
 # convenience constructor works
 @test HTMLElement(:body) == HTMLElement{:body}(HTMLNode[],

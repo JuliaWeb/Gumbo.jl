@@ -1,5 +1,5 @@
 using Base.Test
-using GumboParser
+using Gumbo
 
 include("basics.jl")
 include("comparison.jl")

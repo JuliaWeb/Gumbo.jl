@@ -2,7 +2,7 @@
 
 testdir = dirname(@__FILE__)
 
-@test_throws GumboParser.InvalidHTMLException parsehtml("", strict=true)
+@test_throws Gumbo.InvalidHTMLException parsehtml("", strict=true)
 
 let
     page = open("$testdir/example.html") do example
