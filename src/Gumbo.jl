@@ -1,6 +1,10 @@
 module Gumbo
 
-include("../deps/deps.jl")
+if isfile(joinpath(dirname(dirname(@__FILE__)),"deps","deps.jl"))
+    include("../deps/deps.jl")
+else
+    error("Gumbo not properly installed. Please run Pkg.build(\"Gumbo\")")
+end
 
 include("CGumbo.jl")
 
