@@ -1,7 +1,5 @@
 module CGumbo
 
-include("../deps/deps.jl")
-
 # immutable types corresponding to structs from gumbo.h
 # also various enums from gumbo.h
 
