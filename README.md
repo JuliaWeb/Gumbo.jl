@@ -190,21 +190,21 @@ element in the specified order. For example:
 
 ```julia
 julia> doc = parsehtml("""
-       <html>
-         <body>
-           <div>
-             <p/> <a/> <p/>
-           </div>
-           <div>
-              <span/>
-           </div>
-          </body>
-       </html>
-       """);
+              <html>
+                <body>
+                  <div>
+                    <p></p> <a></a> <p></p>
+                  </div>
+                  <div>
+                     <span></span>
+                  </div>
+                 </body>
+              </html>
+              """);
 
 julia> for elem in preorder(doc.root)
-         println(tag(elem))
-       end
+                println(tag(elem))
+              end
 HTML
 head
 body
@@ -212,25 +212,34 @@ div
 p
 a
 p
-a
-a
 div
 span
 
 julia> for elem in postorder(doc.root)
-         println(tag(elem))
-       end
+                println(tag(elem))
+              end
 head
-a
 p
 a
 p
 div
 span
 div
-a
 body
 HTML
+
+julia> for elem in breadthfirst(doc.root)
+                println(tag(elem))
+              end
+HTML
+head
+body
+div
+div
+p
+a
+p
+span
 ```
 
 ## TODOS
