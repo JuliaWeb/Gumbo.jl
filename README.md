@@ -1,6 +1,7 @@
 # Gumbo.jl
 
 [![Build Status](https://travis-ci.org/porterjamesj/Gumbo.jl.svg?branch=master)](https://travis-ci.org/porterjamesj/Gumbo.jl)
+[![Build status](https://ci.appveyor.com/api/projects/status/4v6s9onnfia8mpeo)](https://ci.appveyor.com/project/porterjamesj/gumbo-jl)
 
 Gumbo.jl is Julia wrapper around
 [Google's gumbo library](https://github.com/google/gumbo-parser) for
