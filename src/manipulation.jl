@@ -27,7 +27,7 @@ Base.push!(elem::HTMLElement,val) = push!(elem.children, val)
 
 text(t::HTMLText) = t.text
 
-# TODO tree traversal functions
+# tree traversals
 
 abstract HTMLIterator
 
