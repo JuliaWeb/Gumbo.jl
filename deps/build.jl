@@ -9,8 +9,8 @@ provides(Sources,
          libgumbo,
          unpacked_dir="gumbo-1.0")
 
-provides(Binaries, URI("http://sourceforge.net/projects/juliadeps-win/files/gumbo-$(Sys.MACHINE).7z"),
-         libgumbo, os = :Windows)
+provides(Binaries, URI("http://sourceforge.net/projects/juliadeps-win/files/gumbo.7z"),
+         libgumbo, unpacked_dir="usr$WORD_SIZE/bin", os = :Windows)
 
 provides(BuildProcess,
          Autotools(libtarget="libgumbo.la"),
