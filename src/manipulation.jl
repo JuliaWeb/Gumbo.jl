@@ -48,6 +48,23 @@ preorder(el::HTMLElement) = PreOrderHTMLIterator(el)
 postorder(el::HTMLElement) = PostOrderHTMLIterator(el)
 breadthfirst(el::HTMLElement) = BreadthFirstHTMLIterator(el)
 
+function preorder(f::Function, el::HTMLElement)
+    for node in PreOrderHTMLIterator(el)
+        f(node)
+    end
+end
+function postorder(f::Function, el::HTMLElement)
+    for node in PostOrderHTMLIterator(el)
+        f(node)
+    end
+end
+function breadthfirst(f::Function, el::HTMLElement)
+    for node in BreadthFirstHTMLIterator(el)
+        f(node)
+    end
+end
+
+
 function traverse(itr::PreOrderHTMLIterator, el::HTMLElement)
     produce(el)
     for child in children(el)
