@@ -38,8 +38,11 @@ function attributes(av::Vector{Ptr{CGumbo.Attribute}})
 end
 
 function element(parent::HTMLNode, ge::CGumbo.Element)
-    tag = CGumbo.TAGS[ge.tag+1]  # +1 is for 1-based julia indexing
-    # TODO when tag is unknown get out actual tag ??
+    tag = CGumbo.TAGS[ge.tag+1]  # +1 is for 1-based julia indexing is
+    if tag == :unknown
+        ot = ge.original_tag
+        tag = bytestring(ot.data, ot.length)[2:end-1] |> symbol
+    end
     attrs = attributes(gvector_to_jl(CGumbo.Attribute,ge.attributes))
     children = HTMLNode[]
     res = HTMLElement{tag}(children, parent, attrs)
