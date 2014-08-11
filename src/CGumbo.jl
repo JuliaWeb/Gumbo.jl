@@ -66,12 +66,12 @@ immutable Element
     attributes::Vector
 end
 
-immutable Node
+immutable Node{T}
     gntype::Int32  # enum
     parent::Ptr{Node}
     index_within_parent::Csize_t
     parse_flags::Int32  # enum
-    v::Element  # might actually be something else
+    v::T
 end
 
 immutable Output
