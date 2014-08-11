@@ -46,25 +46,28 @@ function elem_tag(ge::CGumbo.Element)
     tag
 end
 
-function element(parent::HTMLNode, ge::CGumbo.Element)
+function gumbo_to_jl(parent::HTMLNode, ge::CGumbo.Element)
     tag = elem_tag(ge)
     attrs = attributes(gvector_to_jl(CGumbo.Attribute,ge.attributes))
     children = HTMLNode[]
     res = HTMLElement{tag}(children, parent, attrs)
     for childptr in gvector_to_jl(CGumbo.Node{Int},ge.children)
-        node::CGumbo.Node = load_node(childptr)
-        if node.gntype == CGumbo.ELEMENT
-            push!(children, element(res, node.v))  # already a GumboElement
-        elseif node.gntype == CGumbo.TEXT
-            push!(children,HTMLText(res,
-                                    bytestring(node.v.text)))
+        node = load_node(childptr)
+        if in(typeof(node).parameters[1], [CGumbo.Element, CGumbo.Text])
+            push!(children, gumbo_to_jl(res, node.v))
         end
-        # TODO handle CDATA, comments, etc.
     end
     res
 end
 
-element(ge::CGumbo.Element) = element(NullNode(), ge)
+
+function gumbo_to_jl(parent::HTMLNode, gt::CGumbo.Text)
+    HTMLText(parent, bytestring(gt.text))
+end
+
+# this is a fallback method that should only be called to construct
+# the root of a tree
+gumbo_to_jl(ge::CGumbo.Element) = gumbo_to_jl(NullNode(), ge)
 
 # load a GumboNode struct into memory as the appropriate Julia type
 # this involves loading it once as a CGumbo.Node{Int} in order to
@@ -94,6 +97,6 @@ function document_from_gumbo(goutput::CGumbo.Output)
     gdoc = gnode.v
     doctype = bytestring(gdoc.name)
     groot::CGumbo.Node{CGumbo.Element} = load_node(goutput.root)
-    root = element(groot.v)  # already an element
+    root = gumbo_to_jl(groot.v)  # already an element
     HTMLDocument(doctype, root)
 end
