@@ -31,15 +31,14 @@ Read on for further documentation.
 
 ## Installation
 
-You *should* be able to do:
+As with any other registered Julia package:
 
 ```
-Pkg.clone("Gumbo")
-Pkg.build("Gumbo")
+Pkg.add("Gumbo")
 ```
 
-Please file an issue if the build script fails for you; it has not yet
-been extensively tested.
+Installation does involve building the gumbo C library. Building native libraries can be flaky,
+please file an issue if the build script fails for you
 
 ## Basic usage
 
