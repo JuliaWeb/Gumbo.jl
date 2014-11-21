@@ -5,7 +5,7 @@ using BinDeps
 libgumbo = library_dependency("libgumbo", aliases = ["libgumbo-1"])
 
 provides(Sources,
-         URI("http://jamesporter.me/static/julia/gumbo-1.0.tar.gz"),
+         URI("http://jamesporter.me/julia/gumbo-1.0.tar.gz"),
          libgumbo,
          unpacked_dir="gumbo-1.0")
 
