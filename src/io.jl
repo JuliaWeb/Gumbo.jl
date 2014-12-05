@@ -85,6 +85,6 @@ end
 
 
 function Base.print(io::IO, doc::HTMLDocument)
-    write(io, "<!DOCTYPE $doc.doctype>")
+    write(io, "<!DOCTYPE $(doc.doctype)>")
     Base.print(io, doc.root)
 end
