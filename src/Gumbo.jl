@@ -22,7 +22,8 @@ export HTMLElement,
        parsehtml,
        postorder,
        preorder,
-       breadthfirst
+       breadthfirst,
+       prettyprint
 
 include("htmltypes.jl")
 include("manipulation.jl")
