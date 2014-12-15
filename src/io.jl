@@ -43,6 +43,7 @@ function prettyprint(io::IO, elem::HTMLElement, maxlines)
 end
 
 prettyprint(io::IO, elem::HTMLElement) = prettyprint(io, elem, Inf)
+prettyprint(elem::HTMLElement) = prettyprint(STDOUT, elem)
 
 # TODO maybe query tty_cols for a default?
 function Base.show(io::IO, elem::HTMLElement)
@@ -101,3 +102,4 @@ function Base.print(io::IO, doc::HTMLDocument; pretty=false)
 end
 
 prettyprint(io::IO, doc::HTMLDocument) = Base.print(io, doc, pretty=true)
+prettyprint(doc::HTMLDocument) = prettyprint(STDOUT, doc)
