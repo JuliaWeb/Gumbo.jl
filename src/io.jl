@@ -1,5 +1,8 @@
 ## IO for element
 
+# predicate for if an element contains only a single HTMLText node
+isjusttext(elem) = length(elem.children) == 1 && typeof(first(elem.children)) == HTMLText
+
 # linesof(elem) returns a task. consuming from this task
 # yields returns tuples of (depth, line), where depth is tree
 # depth and line is a pretty string representing the line
@@ -12,6 +15,8 @@ function linesof{T}(elem::HTMLElement{T},depth::Int)
     closetag = "</$T>"
     if isempty(elem.children)
         produce((depth,opentag * closetag))
+    elseif isjusttext(elem)
+        produce((depth,opentag * elem.children[1].text * closetag))
     else
         produce((depth,opentag))
         for child in elem.children
@@ -26,7 +31,7 @@ linesof{T}(elem::HTMLElement{T}) = @task linesof(elem,0)
 linesof(t::HTMLText) = produce((0,t.text))
 linesof(t::HTMLText,depth) = produce((depth,t.text))
 
-function show{T}(io::IO, elem::HTMLElement{T}, maxlines)
+function prettyprint(io::IO, elem::HTMLElement, maxlines)
     for (i,(depth, line)) in enumerate(linesof(elem))
         if i == maxlines
             write(io,". . . \n")
@@ -37,15 +42,18 @@ function show{T}(io::IO, elem::HTMLElement{T}, maxlines)
     end
 end
 
+prettyprint(io::IO, elem::HTMLElement) = prettyprint(io, elem, Inf)
+prettyprint(elem::HTMLElement) = prettyprint(STDOUT, elem)
+
 # TODO maybe query tty_cols for a default?
 function Base.show(io::IO, elem::HTMLElement)
     write(io,summary(elem)*":\n")
-    show(io, elem, 20)
+    prettyprint(io, elem, 20)
 end
 
 function Base.showall(io::IO, elem::HTMLElement)
     write(io,summary(elem)*":\n")
-    show(io, elem, Inf)
+    prettyprint(io, elem, Inf)
 end
 
 function Base.showcompact(io::IO, elem::HTMLElement)
@@ -53,9 +61,13 @@ function Base.showcompact(io::IO, elem::HTMLElement)
 end
 
 # print just writes all the lines to io
-function Base.print(io::IO, elem::HTMLElement)
-    for (depth,line) in linesof(elem)
-        write(io, line)
+function Base.print(io::IO, elem::HTMLElement; pretty=false)
+    if pretty
+        prettyprint(io, elem, Inf)
+    else
+        for (depth,line) in linesof(elem)
+            write(io, line)
+        end
     end
 end
 
@@ -84,7 +96,10 @@ function Base.showall(io::IO, doc::HTMLDocument)
 end
 
 
-function Base.print(io::IO, doc::HTMLDocument)
+function Base.print(io::IO, doc::HTMLDocument; pretty=false)
     write(io, "<!DOCTYPE $(doc.doctype)>")
-    Base.print(io, doc.root)
+    Base.print(io, doc.root, pretty=pretty)
 end
+
+prettyprint(io::IO, doc::HTMLDocument) = Base.print(io, doc, pretty=true)
+prettyprint(doc::HTMLDocument) = prettyprint(STDOUT, doc)
