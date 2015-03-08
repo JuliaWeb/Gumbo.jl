@@ -38,8 +38,8 @@ As with any other registered Julia package:
 Pkg.add("Gumbo")
 ```
 
-Installation does involve building the gumbo C library. Building native libraries can be flaky,
-please file an issue if the build script fails for you
+Installation does involve building the gumbo C library, for which you'll need a C++ compiler and GNU make. Building native libraries can be flaky,
+please file an issue if the build script fails for you.
 
 ## Basic usage
 
