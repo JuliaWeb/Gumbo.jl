@@ -7,7 +7,7 @@ const ex = parsehtml("""
                      </html>
                      """)
 
-let res = {}
+let res = Any[]
     for node in breadthfirst(ex.root)
         push!(res, node)
     end
@@ -16,7 +16,7 @@ let res = {}
     @assert text(last(res)) == "b"
 end
 
-let res = {}
+let res = Any[]
     for node in preorder(ex.root)
         push!(res, node)
     end
@@ -25,7 +25,7 @@ let res = {}
     @assert text(last(res)) == "c"
 end
 
-let res = {}
+let res = Any[]
     for node in postorder(ex.root)
         push!(res, node)
     end
@@ -44,7 +44,7 @@ end
 
 # function arg form of traversals
 
-let res = {}
+let res = Any[]
     breadthfirst(ex.root) do node
         push!(res, node)
     end
@@ -53,7 +53,7 @@ let res = {}
     @assert text(last(res)) == "b"
 end
 
-let res = {}
+let res = Any[]
     preorder(ex.root) do node
         push!(res, node)
     end
@@ -62,7 +62,7 @@ let res = {}
     @assert text(last(res)) == "c"
 end
 
-let res = {}
+let res = Any[]
     postorder(ex.root) do node
         push!(res, node)
     end
