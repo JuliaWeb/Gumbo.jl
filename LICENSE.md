@@ -1,6 +1,6 @@
 The Gumbo.jl package is licensed under the MIT "Expat" License:
 
-> Copyright (c) 2014: James Porter.
+> Copyright (c) 2014--2015: James Porter and [other contributors](https://github.com/porterjamesj/Gumbo.jl/graphs/contributors).
 >
 > Permission is hereby granted, free of charge, to any person obtaining
 > a copy of this software and associated documentation files (the

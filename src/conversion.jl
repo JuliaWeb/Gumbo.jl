@@ -9,8 +9,8 @@ function parsehtml(input::String; strict=false)
         throw(InvalidHTMLException("input html was invalid"))
     end
     doc = document_from_gumbo(goutput)
-    gumbo_dl = dlopen(libgumbo)
-    default_options = dlsym(gumbo_dl, :kGumboDefaultOptions)
+    gumbo_dl = Libdl.dlopen(libgumbo)
+    default_options = Libdl.dlsym(gumbo_dl, :kGumboDefaultOptions)
     ccall((:gumbo_destroy_output,libgumbo),
           Void,
           (Ptr{Void}, Ptr{CGumbo.Output}),
@@ -23,7 +23,7 @@ end
 # of Ptr{T} where T is the struct contained
 # by the gumbo vector
 gvector_to_jl(T,gv::CGumbo.Vector) = pointer_to_array(convert(Ptr{Ptr{T}},gv.data),
-                                                     (int(gv.length),))
+                                                     (@compat(Int(gv.length)),))
 
 
 # convert a vector of pointers to GumboAttributes to
