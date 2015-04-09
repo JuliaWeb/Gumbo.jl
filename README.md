@@ -4,7 +4,7 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/4v6s9onnfia8mpeo)](https://ci.appveyor.com/project/porterjamesj/gumbo-jl)
 [![Gumbo](http://pkg.julialang.org/badges/Gumbo_release.svg)](http://pkg.julialang.org/?pkg=Gumbo&ver=release)
 
-Gumbo.jl is Julia wrapper around
+Gumbo.jl is a Julia wrapper around
 [Google's gumbo library](https://github.com/google/gumbo-parser) for
 parsing HTML.
 
@@ -34,7 +34,7 @@ Read on for further documentation.
 
 As with any other registered Julia package:
 
-```
+```jl
 Pkg.add("Gumbo")
 ```
 
@@ -64,7 +64,7 @@ wild web. It will return a valid HTML document for *any* input, doing
 all sorts of algorithmic gymnastics to twist what you give it into
 valid HTML.
 
-If you want an HTML valdator, this is probably not your library. That
+If you want an HTML validator, this is probably not your library. That
 said, `parsehtml` does take an optional `Bool` keyword argument,
 `strict` which, if `true`, causes an `InvalidHTMLError` to be thrown
 if the call to the gumbo C library produces any errors.
@@ -98,7 +98,7 @@ end
 `HTMLElement` is probably the most interesting and frequently used
 type. An `HTMLElement` is parameterized by a symbol representing its
 tag. So an `HTMLElement{:a}` is a different type from an
-`HTMLElement{:body}`, etc. An empty HTMLElement of a given tag can be
+`HTMLElement{:body}`, etc. An empty `HTMLElement` of a given tag can be
 constructed as follows:
 
 ```julia
@@ -141,7 +141,7 @@ There are a number of convenience methods for working with `HTMLElement`s:
 
 ### `HTMLText`
 
-```
+```jl
 type HTMLText <: HTMLNode
     parent::HTMLNode
     text::String
@@ -172,7 +172,7 @@ This type is quite simple, just a reference to its parent and the
 actual text it represents (this is also accessible by a `text`
 function). You can construct `HTMLText` instances as follows:
 
-```
+```jl
 julia> HTMLText("Example text")
 HTML Text: Example text
 ```
