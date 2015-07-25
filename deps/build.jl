@@ -9,7 +9,7 @@ provides(Sources,
          libgumbo,
          unpacked_dir="gumbo-1.0")
 
-provides(Binaries, URI("http://sourceforge.net/projects/juliadeps-win/files/gumbo.7z"),
+provides(Binaries, URI("https://cache.e.ip.saba.us/https://bintray.com/artifact/download/tkelman/generic/gumbo.7z"),
          libgumbo, unpacked_dir="usr$WORD_SIZE/bin", os = :Windows)
 
 provides(BuildProcess,
