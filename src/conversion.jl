@@ -1,7 +1,7 @@
-function parsehtml(input::String; strict=false)
+function parsehtml(input::AbstractString; strict=false)
     result_ptr = ccall((:gumbo_parse,libgumbo),
                        Ptr{CGumbo.Output},
-                       (Ptr{Uint8},),
+                       (Cstring,),
                        input)
     goutput::CGumbo.Output = unsafe_load(result_ptr)
 
@@ -27,9 +27,9 @@ gvector_to_jl(T,gv::CGumbo.Vector) = pointer_to_array(convert(Ptr{Ptr{T}},gv.dat
 
 
 # convert a vector of pointers to GumboAttributes to
-# a Dict String => String
+# a Dict AbstractString => AbstractString
 function attributes(av::Vector{Ptr{CGumbo.Attribute}})
-    result = Dict{String,String}()
+    result = Dict{AbstractString,AbstractString}()
     for ptr in av
         ga::CGumbo.Attribute = unsafe_load(ptr)
         result[bytestring(ga.name)] = bytestring(ga.value)

@@ -3,28 +3,28 @@ abstract HTMLNode
 # TODO immutable?
 type HTMLText <: HTMLNode
     parent::HTMLNode
-    text::String
+    text::AbstractString
 end
 
 # convenience method for defining without parent
-HTMLText(text::String) = HTMLText(NullNode(), text)
+HTMLText(text::AbstractString) = HTMLText(NullNode(), text)
 
 type NullNode <: HTMLNode end
 
 type HTMLElement{T} <: HTMLNode
     children::Vector{HTMLNode}
     parent::HTMLNode
-    attributes::Dict{String, String}
+    attributes::Dict{AbstractString,AbstractString}
 end
 
 # convenience method for defining an empty element
-HTMLElement(T::Symbol) = HTMLElement{T}(HTMLNode[],NullNode(),Dict{String,String}())
+HTMLElement(T::Symbol) = HTMLElement{T}(HTMLNode[],NullNode(),Dict{AbstractString,AbstractString}())
 
 type HTMLDocument
-    doctype::String
+    doctype::AbstractString
     root::HTMLElement
 end
 
 type InvalidHTMLException <: Exception
-    msg::String
+    msg::AbstractString
 end

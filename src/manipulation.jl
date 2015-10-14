@@ -5,7 +5,7 @@
 tag{T}(elem::HTMLElement{T}) = T
 
 attrs(elem::HTMLElement) = elem.attributes
-function setattr!(elem::HTMLElement, name::String, value::String)
+function setattr!(elem::HTMLElement, name::AbstractString, value::AbstractString)
     elem.attributes[name] = value
 end
 getattr(elem::HTMLElement, name) = elem.attributes[name]
@@ -16,7 +16,7 @@ children(elem::HTMLElement) = elem.children
 # breadthfirst traversal will have to be updated
 children(elem::HTMLNode) = HTMLNode[]
 
-# indexing into an element indexes into it's children
+# indexing into an element indexes into its children
 Base.getindex(elem::HTMLElement,i) = getindex(elem.children,i)
 Base.setindex!(elem::HTMLElement,i,val) = setindex!(elem.children,i,val)
 
