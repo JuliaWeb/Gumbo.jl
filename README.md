@@ -2,7 +2,10 @@
 
 [![Build Status](https://travis-ci.org/porterjamesj/Gumbo.jl.svg?branch=master)](https://travis-ci.org/porterjamesj/Gumbo.jl)
 [![Build status](https://ci.appveyor.com/api/projects/status/4v6s9onnfia8mpeo)](https://ci.appveyor.com/project/porterjamesj/gumbo-jl)
-[![Gumbo](http://pkg.julialang.org/badges/Gumbo_release.svg)](http://pkg.julialang.org/?pkg=Gumbo&ver=release)
+[![Gumbo](http://pkg.julialang.org/badges/Gumbo_0.3.svg)](http://pkg.julialang.org/?pkg=Gumbo)
+[![Gumbo](http://pkg.julialang.org/badges/Gumbo_0.4.svg)](http://pkg.julialang.org/?pkg=Gumbo)
+[![Coverage Status](https://coveralls.io/repos/porterjamesj/Gumbo.jl/badge.svg?branch=master&service=github)](https://coveralls.io/github/porterjamesj/Gumbo.jl?branch=master)
+[![codecov.io](http://codecov.io/github/porterjamesj/Gumbo.jl/coverage.svg?branch=master)](http://codecov.io/github/porterjamesj/Gumbo.jl?branch=master)
 
 Gumbo.jl is a Julia wrapper around
 [Google's gumbo library](https://github.com/google/gumbo-parser) for
@@ -134,7 +137,7 @@ There are a number of convenience methods for working with `HTMLElement`s:
    return the children array of this element
 
 - `getattr(elem, name)`
-  get the value of attribute `name` or raise a KeyError
+  get the value of attribute `name` or raise a `KeyError`
 
 - `setattr!(elem, name, value)`
   set the value of attribute `name` to `value`
