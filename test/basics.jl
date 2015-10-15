@@ -5,7 +5,7 @@ import Gumbo: HTMLNode, NullNode
 # convenience constructor works
 @test HTMLElement(:body) == HTMLElement{:body}(HTMLNode[],
                                                NullNode(),
-                                               Dict{String,String}())
+                                               Dict{AbstractString,AbstractString}())
 
 # accessing tags works
 @test HTMLElement(:body) |> tag == :body

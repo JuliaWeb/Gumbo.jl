@@ -9,12 +9,14 @@
 
 # equality
 
-Base.isequal(x::HTMLDocument, y::HTMLDocument) =
+import Base: ==, isequal, hash
+
+isequal(x::HTMLDocument, y::HTMLDocument) =
     isequal(x.doctype,y.doctype) && isequal(x.root,y.root)
 
-Base.isequal(x::HTMLText,y::HTMLText) = isequal(x.text, y.text)
+isequal(x::HTMLText,y::HTMLText) = isequal(x.text, y.text)
 
-Base.isequal(x::HTMLElement, y::HTMLElement) =
+isequal(x::HTMLElement, y::HTMLElement) =
     isequal(x.attributes,y.attributes) && isequal(x.children,y.children)
 
 ==(x::HTMLDocument, y::HTMLDocument) =
@@ -28,11 +30,11 @@ Base.isequal(x::HTMLElement, y::HTMLElement) =
 
 # hashing
 
-function Base.hash(doc::HTMLDocument)
+function hash(doc::HTMLDocument)
     hash(hash(HTMLDocument),hash(hash(doc.doctype), hash(doc.root)))
 end
 
-function Base.hash{T}(elem::HTMLElement{T})
+function hash{T}(elem::HTMLElement{T})
     h = hash(HTMLElement)
     h = hash(h,hash(T))
     h = hash(h,hash(attrs(elem)))
@@ -42,5 +44,4 @@ function Base.hash{T}(elem::HTMLElement{T})
     return h
 end
 
-
-Base.hash(t::HTMLText) = hash(hash(HTMLText),hash(t.text))
+hash(t::HTMLText) = hash(hash(HTMLText),hash(t.text))

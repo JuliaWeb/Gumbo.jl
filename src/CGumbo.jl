@@ -12,7 +12,7 @@ immutable Vector  # Gumbo vector
 end
 
 immutable StringPiece
-    data::Ptr{Uint8}
+    data::Ptr{UInt8}
     length::Csize_t
 end
 
@@ -23,7 +23,7 @@ immutable SourcePosition
 end
 
 immutable Text
-    text::Ptr{Uint8}
+    text::Ptr{UInt8}
     original_text::StringPiece
     start_pos::SourcePosition
 end
@@ -39,17 +39,17 @@ const WHITESPACE = @compat Int32(4)
 immutable Document
     children::Vector
     has_doctype::Bool
-    name::Ptr{Uint8}
-    public_identifier::Ptr{Uint8}
-    system_identifier::Ptr{Uint8}
+    name::Ptr{UInt8}
+    public_identifier::Ptr{UInt8}
+    system_identifier::Ptr{UInt8}
     doc_type_quirks_mode::Int32  # enum
 end
 
 immutable Attribute
     attr_namespace::Int32  # enum
-    name::Ptr{Uint8}
+    name::Ptr{UInt8}
     original_name::StringPiece
-    value::Ptr{Uint8}
+    value::Ptr{UInt8}
     original_value::StringPiece
     name_start::SourcePosition
     name_end::SourcePosition
