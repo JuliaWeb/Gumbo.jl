@@ -22,7 +22,7 @@ end
 # turn a gumbo vector into a Julia vector
 # of Ptr{T} where T is the struct contained
 # by the gumbo vector
-gvector_to_jl(T,gv::CGumbo.Vector) = pointer_to_array(convert(Ptr{Ptr{T}},gv.data),
+gvector_to_jl(T,gv::CGumbo.Vector) = unsafe_wrap(Array, convert(Ptr{Ptr{T}},gv.data),
                                                      (@compat(Int(gv.length)),))
 
 
@@ -32,7 +32,7 @@ function attributes(av::Vector{Ptr{CGumbo.Attribute}})
     result = Dict{AbstractString,AbstractString}()
     for ptr in av
         ga::CGumbo.Attribute = unsafe_load(ptr)
-        result[bytestring(ga.name)] = bytestring(ga.value)
+        result[unsafe_string(ga.name)] = unsafe_string(ga.value)
     end
     return result
 end
@@ -41,7 +41,7 @@ function elem_tag(ge::CGumbo.Element)
     tag = CGumbo.TAGS[ge.tag+1]  # +1 is for 1-based julia indexing is
     if tag == :unknown
         ot = ge.original_tag
-        tag = bytestring(ot.data, ot.length)[2:end-1] |> symbol
+        tag = unsafe_string(ot.data, ot.length)[2:end-1] |> Symbol
     end
     tag
 end
@@ -62,7 +62,7 @@ end
 
 
 function gumbo_to_jl(parent::HTMLNode, gt::CGumbo.Text)
-    HTMLText(parent, bytestring(gt.text))
+    HTMLText(parent, unsafe_string(gt.text))
 end
 
 # this is a fallback method that should only be called to construct
@@ -95,7 +95,7 @@ function document_from_gumbo(goutput::CGumbo.Output)
     # TODO convert some of these typeasserts to better error messages?
     gnode::CGumbo.Node{CGumbo.Document} = load_node(goutput.document)
     gdoc = gnode.v
-    doctype = bytestring(gdoc.name)
+    doctype = unsafe_string(gdoc.name)
     groot::CGumbo.Node{CGumbo.Element} = load_node(goutput.root)
     root = gumbo_to_jl(groot.v)  # already an element
     HTMLDocument(doctype, root)
