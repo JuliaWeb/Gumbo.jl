@@ -4,7 +4,7 @@ os:
     - osx
 julia:
     - 0.4
-    - nightly
+    - 0.5
 notifications:
     email: false
 sudo: false
@@ -13,4 +13,3 @@ script:
     - julia -e 'Pkg.clone(pwd()); Pkg.build("Gumbo"); Pkg.test("Gumbo"; coverage=true)';
 after_success:
     - julia -e 'cd(Pkg.dir("Gumbo")); Pkg.add("Coverage"); using Coverage; Codecov.submit(process_folder())';
-
