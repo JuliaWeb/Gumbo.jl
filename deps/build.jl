@@ -1,4 +1,5 @@
 using BinDeps
+using Compat
 
 @BinDeps.setup
 
@@ -10,7 +11,7 @@ provides(Sources,
          unpacked_dir="gumbo-1.0")
 
 provides(Binaries, URI("https://cache.julialang.org/https://bintray.com/artifact/download/tkelman/generic/gumbo.7z"),
-         libgumbo, unpacked_dir="usr$WORD_SIZE/bin", os = :Windows)
+         libgumbo, unpacked_dir="usr$(@compat Sys.WORD_SIZE)/bin", os = :Windows)
 
 provides(BuildProcess,
          Autotools(libtarget="libgumbo.la"),
