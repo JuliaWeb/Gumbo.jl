@@ -4,7 +4,7 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/4v6s9onnfia8mpeo)](https://ci.appveyor.com/project/porterjamesj/gumbo-jl)
 [![Gumbo](http://pkg.julialang.org/badges/Gumbo_0.3.svg)](http://pkg.julialang.org/?pkg=Gumbo)
 [![Gumbo](http://pkg.julialang.org/badges/Gumbo_0.4.svg)](http://pkg.julialang.org/?pkg=Gumbo)
-[![Coverage Status](https://coveralls.io/repos/porterjamesj/Gumbo.jl/badge.svg?branch=master&service=github)](https://coveralls.io/github/porterjamesj/Gumbo.jl?branch=master)
+[![Gumbo](http://pkg.julialang.org/badges/Gumbo_0.5.svg)](http://pkg.julialang.org/?pkg=Gumbo)
 [![codecov.io](http://codecov.io/github/porterjamesj/Gumbo.jl/coverage.svg?branch=master)](http://codecov.io/github/porterjamesj/Gumbo.jl?branch=master)
 
 Gumbo.jl is a Julia wrapper around
