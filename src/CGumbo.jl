@@ -1,7 +1,5 @@
 module CGumbo
 
-using Compat
-
 # immutable types corresponding to structs from gumbo.h
 # also various enums from gumbo.h
 
@@ -30,11 +28,11 @@ end
 
 # GumboNodeType enum
 
-const DOCUMENT = @compat Int32(0)
-const ELEMENT = @compat Int32(1)
-const TEXT = @compat Int32(2)
-const CDATA = @compat Int32(3)
-const WHITESPACE = @compat Int32(4)
+const DOCUMENT = Int32(0)
+const ELEMENT = Int32(1)
+const TEXT = Int32(2)
+const CDATA = Int32(3)
+const WHITESPACE = Int32(4)
 
 immutable Document
     children::Vector

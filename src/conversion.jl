@@ -23,7 +23,7 @@ end
 # of Ptr{T} where T is the struct contained
 # by the gumbo vector
 gvector_to_jl(T,gv::CGumbo.Vector) = unsafe_wrap(Array, convert(Ptr{Ptr{T}},gv.data),
-                                                     (@compat(Int(gv.length)),))
+                                                     (Int(gv.length),))
 
 
 # convert a vector of pointers to GumboAttributes to
@@ -38,7 +38,7 @@ function attributes(av::Vector{Ptr{CGumbo.Attribute}})
 end
 
 function elem_tag(ge::CGumbo.Element)
-    tag = CGumbo.TAGS[ge.tag+1]  # +1 is for 1-based julia indexing is
+    tag = CGumbo.TAGS[ge.tag+1]  # +1 is for 1-based julia indexing
     if tag == :unknown
         ot = ge.original_tag
         tag = unsafe_string(ot.data, ot.length)[2:end-1] |> Symbol
