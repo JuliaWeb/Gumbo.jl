@@ -1,5 +1,4 @@
 using Base.Test
-using Compat
 using Gumbo
 
 include("basics.jl")

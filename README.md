@@ -4,7 +4,7 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/4v6s9onnfia8mpeo)](https://ci.appveyor.com/project/porterjamesj/gumbo-jl)
 [![Gumbo](http://pkg.julialang.org/badges/Gumbo_0.3.svg)](http://pkg.julialang.org/?pkg=Gumbo)
 [![Gumbo](http://pkg.julialang.org/badges/Gumbo_0.4.svg)](http://pkg.julialang.org/?pkg=Gumbo)
-[![Coverage Status](https://coveralls.io/repos/porterjamesj/Gumbo.jl/badge.svg?branch=master&service=github)](https://coveralls.io/github/porterjamesj/Gumbo.jl?branch=master)
+[![Gumbo](http://pkg.julialang.org/badges/Gumbo_0.5.svg)](http://pkg.julialang.org/?pkg=Gumbo)
 [![codecov.io](http://codecov.io/github/porterjamesj/Gumbo.jl/coverage.svg?branch=master)](http://codecov.io/github/porterjamesj/Gumbo.jl?branch=master)
 
 Gumbo.jl is a Julia wrapper around
@@ -186,28 +186,28 @@ will be a `NullNode`.
 
 ## Tree traversal
 
-There are three methods for iterating over HTML trees: `postorder`,
-`preorder`, and `breadthfirst`. These return instances of iterator
-types that can be iterated over to yield the children of the passed
-element in the specified order. For example:
+Use the iterators defined in
+[AbstractTrees.jl](https://github.com/Keno/AbstractTrees.jl/), e.g.:
 
 ```julia
+julia> using AbstractTrees
+
+julia> using Gumbo
+
 julia> doc = parsehtml("""
-              <html>
-                <body>
-                  <div>
-                    <p></p> <a></a> <p></p>
-                  </div>
-                  <div>
-                     <span></span>
-                  </div>
-                 </body>
-              </html>
-              """);
+                     <html>
+                       <body>
+                         <div>
+                           <p></p> <a></a> <p></p>
+                         </div>
+                         <div>
+                            <span></span>
+                         </div>
+                        </body>
+                     </html>
+                     """);
 
-julia> for elem in preorder(doc.root)
-                println(tag(elem))
-              end
+julia> for elem in PreOrderDFS(doc.root) println(tag(elem)) end
 HTML
 head
 body
@@ -218,9 +218,7 @@ p
 div
 span
 
-julia> for elem in postorder(doc.root)
-                println(tag(elem))
-              end
+julia> for elem in PostOrderDFS(doc.root) println(tag(elem)) end
 head
 p
 a
@@ -231,9 +229,7 @@ div
 body
 HTML
 
-julia> for elem in breadthfirst(doc.root)
-                println(tag(elem))
-              end
+julia> for elem in StatelessBFS(doc.root) println(tag(elem)) end
 HTML
 head
 body
@@ -243,6 +239,8 @@ p
 a
 p
 span
+
+julia>
 ```
 
 ## TODOS

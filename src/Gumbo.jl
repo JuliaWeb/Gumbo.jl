@@ -1,7 +1,5 @@
 module Gumbo
 
-using Compat
-
 if isfile(joinpath(dirname(dirname(@__FILE__)),"deps","deps.jl"))
     include("../deps/deps.jl")
 else
