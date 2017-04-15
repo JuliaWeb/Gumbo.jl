@@ -1,4 +1,8 @@
-abstract HTMLNode
+using Compat
+
+@compat abstract type HTMLNode end
+
+# TODO change all these to use struct / mutable struct in the next release
 
 # TODO immutable?
 type HTMLText <: HTMLNode

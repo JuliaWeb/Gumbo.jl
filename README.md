@@ -5,6 +5,7 @@
 [![Gumbo](http://pkg.julialang.org/badges/Gumbo_0.3.svg)](http://pkg.julialang.org/?pkg=Gumbo)
 [![Gumbo](http://pkg.julialang.org/badges/Gumbo_0.4.svg)](http://pkg.julialang.org/?pkg=Gumbo)
 [![Gumbo](http://pkg.julialang.org/badges/Gumbo_0.5.svg)](http://pkg.julialang.org/?pkg=Gumbo)
+[![Gumbo](http://pkg.julialang.org/badges/Gumbo_0.6.svg)](http://pkg.julialang.org/?pkg=Gumbo)
 [![codecov.io](http://codecov.io/github/porterjamesj/Gumbo.jl/coverage.svg?branch=master)](http://codecov.io/github/porterjamesj/Gumbo.jl?branch=master)
 
 Gumbo.jl is a Julia wrapper around
@@ -35,21 +36,19 @@ Read on for further documentation.
 
 ## Installation
 
-As with any other registered Julia package:
-
 ```jl
 Pkg.add("Gumbo")
 ```
 
-Installation does involve building the gumbo C library, for which you'll need a C++ compiler and GNU make. Building native libraries can be flaky,
-please file an issue if the build script fails for you.
+Installation does involve building the gumbo C library, for which
+you'll need a C++ compiler and GNU make. Building native libraries can
+be flaky, please file an issue if the build script fails for you.
 
 ## Basic usage
 
 The workhorse is the `parsehtml` function, which takes a single
-argument, a valid UTF8 `String` (meaning it could be a `UTF8String` or
-an `ASCIIString`, since all valid ASCII is also valid UTF8), which is
-interpreted as HTML data to be parsed, e.g.:
+argument, a valid UTF8 string, which is interpreted as HTML data to be
+parsed, e.g.:
 
 ```julia
 parsehtml("<h1> Hello, world! </h1>")
@@ -246,3 +245,4 @@ julia>
 ## TODOS
 
 - support CDATA
+- support comments

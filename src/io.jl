@@ -1,74 +1,56 @@
 ## IO for element
 
-# predicate for if an element contains only a single HTMLText node
-isjusttext(elem) = length(elem.children) == 1 && typeof(first(elem.children)) == HTMLText
+# this is to avoid copy and pasting in print below, don't use this
+# anywhere else. gnarly hack, the variable names here have to
+# correspond to those in print
+macro writeandcheck(line)
+    esc(quote
+        if pretty
+            write(io, repeat("  ",depth)*$line*"\n")
+        else
+            write(io, $line)
+        end
+        written += 1
+        if written == maxlines return end
+    end)
+end
 
-# linesof(elem) returns a task. consuming from this task
-# yields returns tuples of (depth, line), where depth is tree
-# depth and line is a pretty string representing the line
-function linesof{T}(elem::HTMLElement{T},depth::Int)
+function Base.print{T}(io::IO, elem::HTMLElement{T},
+                       maxlines=Inf, depth=0, written=0; pretty=false)
     opentag = isempty(elem.attributes) ? "<$T" : "<$T "
     for (name,value) in elem.attributes
         opentag *= "$name=\"$value\""
     end
     opentag *= ">"
     closetag = "</$T>"
-    if isempty(elem.children)
-        produce((depth,opentag * closetag))
-    elseif isjusttext(elem)
-        produce((depth,opentag * elem.children[1].text * closetag))
+    # TODO make inline elements printed all on one line
+    if isempty(children(elem))
+        @writeandcheck(opentag * closetag)
     else
-        produce((depth,opentag))
+        @writeandcheck(opentag)
         for child in elem.children
-            linesof(child,depth+1)
+            print(io,child,maxlines,depth+1,written,pretty=pretty)
         end
-        produce((depth,closetag))
+        @writeandcheck(closetag)
     end
 end
 
-linesof{T}(elem::HTMLElement{T}) = @task linesof(elem,0)
-
-linesof(t::HTMLText) = produce((0,t.text))
-linesof(t::HTMLText,depth) = produce((depth,t.text))
-
-function prettyprint(io::IO, elem::HTMLElement, maxlines)
-    for (i,(depth, line)) in enumerate(linesof(elem))
-        if i == maxlines
-            write(io,". . . \n")
-            return
-        else
-            write(io,repeat("  ",depth)*line*"\n")
-        end
-    end
-end
-
-prettyprint(io::IO, elem::HTMLElement) = prettyprint(io, elem, Inf)
-prettyprint(elem::HTMLElement) = prettyprint(STDOUT, elem)
+prettyprint(io::IO, elem::HTMLElement) = print(io, elem, Inf, pretty=true)
+prettyprint(elem::HTMLElement) = print(STDOUT, elem, pretty=true)
 
 # TODO maybe query tty_cols for a default?
 function Base.show(io::IO, elem::HTMLElement)
     write(io,summary(elem)*":\n")
-    prettyprint(io, elem, 20)
+    print(io, elem, 20, pretty=true)
 end
 
 function Base.showall(io::IO, elem::HTMLElement)
     write(io,summary(elem)*":\n")
-    prettyprint(io, elem, Inf)
+    print(io, elem, Inf, pretty=true)
 end
 
 function Base.showcompact(io::IO, elem::HTMLElement)
     write(io,summary(elem))
-end
-
-# print just writes all the lines to io
-function Base.print(io::IO, elem::HTMLElement; pretty=false)
-    if pretty
-        prettyprint(io, elem, Inf)
-    else
-        for (depth,line) in linesof(elem)
-            write(io, line)
-        end
-    end
 end
 
 ### IO for Text
@@ -77,24 +59,30 @@ function Base.show(io::IO, t::HTMLText)
     write(io,"HTML Text: $(t.text)")
 end
 
-function Base.print(io::IO, t::HTMLText)
-    write(io,"$(t.text)")
+function Base.print(io::IO, node::HTMLText,
+                    maxlines=Inf, depth=0, written=0; pretty=false)
+    if pretty
+        for line in split(strip(text(node)), "\n")
+            @writeandcheck(line)
+        end
+    else
+        @writeandcheck(text(node))
+    end
 end
 
-### IO for Document
+### io for Document
 
 function Base.show(io::IO, doc::HTMLDocument)
     write(io, "HTML Document:\n")
     write(io, "<!DOCTYPE $(doc.doctype)>\n")
-    Base.show(io, doc.root)
+    Base.print(io, doc.root, pretty=true)
 end
 
 function Base.showall(io::IO, doc::HTMLDocument)
     write(io, "HTML Document:\n")
     write(io, "<!DOCTYPE $(doc.doctype)>\n")
-    Base.showall(io, doc.root)
+    Base.print(io, doc.root, pretty=true)
 end
-
 
 function Base.print(io::IO, doc::HTMLDocument; pretty=false)
     write(io, "<!DOCTYPE $(doc.doctype)>")
