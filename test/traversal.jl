@@ -1,3 +1,11 @@
+using AbstractTrees
+
+# TODO these tests are pretty silly in that they now pretty much just
+# test code in AbstractTrees.jl. They are still sort of useful though
+# in that they test our implementation of `children` indirectly, and I
+# an just loath to remove tests in general, so I'm going to leave them
+# here for now
+
 const ex = parsehtml("""
                      <html>
                      <head></head>
@@ -8,7 +16,7 @@ const ex = parsehtml("""
                      """)
 
 let res = Any[]
-    for node in breadthfirst(ex.root)
+    for node in StatelessBFS(ex.root)
         push!(res, node)
     end
     @assert tag(res[3]) == :body
@@ -17,7 +25,7 @@ let res = Any[]
 end
 
 let res = Any[]
-    for node in preorder(ex.root)
+    for node in PreOrderDFS(ex.root)
         push!(res, node)
     end
     @assert tag(res[3]) == :body
@@ -26,7 +34,7 @@ let res = Any[]
 end
 
 let res = Any[]
-    for node in postorder(ex.root)
+    for node in PostOrderDFS(ex.root)
         push!(res, node)
     end
     @assert tag(res[1]) == :head
@@ -37,37 +45,6 @@ end
 
 isp(node::HTMLNode) = isa(node, HTMLElement) && tag(node) == :p
 
-for itr in [postorder, preorder, breadthfirst]
+for itr in [PostOrderDFS, PreOrderDFS, StatelessBFS]
     @assert mapreduce(isp,+,itr(ex.root)) == 1
-end
-
-
-# function arg form of traversals
-
-let res = Any[]
-    breadthfirst(ex.root) do node
-        push!(res, node)
-    end
-    @assert tag(res[3]) == :body
-    @assert tag(res[4]) == :p
-    @assert text(last(res)) == "b"
-end
-
-let res = Any[]
-    preorder(ex.root) do node
-        push!(res, node)
-    end
-    @assert tag(res[3]) == :body
-    @assert tag(res[4]) == :p
-    @assert text(last(res)) == "c"
-end
-
-let res = Any[]
-    postorder(ex.root) do node
-        push!(res, node)
-    end
-    @assert tag(res[1]) == :head
-    @assert text(res[2]) == "a"
-    @assert tag(res[4]) == :strong
-    @assert tag(last(res)) == :HTML
 end

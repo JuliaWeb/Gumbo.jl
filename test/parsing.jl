@@ -5,14 +5,14 @@ testdir = dirname(@__FILE__)
 @test_throws Gumbo.InvalidHTMLException parsehtml("", strict=true)
 
 let
-    page = open("$testdir/example.html") do example
+    page = open("$testdir/fixtures/example.html") do example
         example |> readstring |> parsehtml
     end
     @test page.doctype == "html"
     root = page.root
     @test tag(root[1][1]) == :meta
     @test root[2][1][1].text == "A simple test page."
-    @test is(root[2][1][1].parent, root[2][1])
+    @test root[2][1][1].parent === root[2][1]
 end
 
 

@@ -1,6 +1,9 @@
 
 let
-    doc = open("$testdir/example.html") do example
+    # roundtrip test
+    # TODO this could be done with Quickcheck if we had a way of
+    # generating "interesting" HTML documents
+    doc = open("$testdir/fixtures/example.html") do example
         example |> readstring |> parsehtml
     end
     io = IOBuffer()
@@ -8,4 +11,22 @@ let
     seek(io, 0)
     newdoc = io |> readstring |> parsehtml
     @test newdoc == doc
+end
+
+tests = [
+    "30",  # regression test for issue #30
+    "multitext",  # regression test for multiple HTMLText in one HTMLElement
+    "varied",  # relatively complex example
+]
+for test in tests
+    let
+        doc = open("$testdir/fixtures/$(test)_input.html") do example
+            example |> readstring |> parsehtml
+        end
+        io = IOBuffer()
+        print(io, doc.root, pretty=true)
+        seek(io, 0)
+        @test readstring(io) ==
+            readstring(open("$testdir/fixtures/$(test)_output.html"))
+    end
 end
