@@ -4,9 +4,10 @@ environment:
   - JULIA_URL: "https://julialangnightlies-s3.julialang.org/bin/winnt/x64/julia-latest-win64.exe"
 
 install:
-# Download most recent Julia Windows binary
-  - ps: (new-object net.webclient).DownloadFile($env:JULIA_URL), "C:\projects\julia-binary.exe")
-# Run installer silently, output to C:\projects\julia
+  # Download most recent Julia Windows binary
+  - ps: "[System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12"
+  - ps: (new-object net.webclient).DownloadFile($env:JULIA_URL, "C:\projects\julia-binary.exe")
+  # Run installer silently, output to C:\projects\julia
   - C:\projects\julia-binary.exe /S /D=C:\projects\julia
 
 build_script:
