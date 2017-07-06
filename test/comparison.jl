@@ -4,14 +4,11 @@
 let
     x = HTMLText("test")
     y = HTMLText("test")
+    x1 = HTMLText("test1")
     @test x == y
     @test hash(x) == hash(y)
-    x.text *= "1"
-    @test x != y
-    @test hash(x) != hash(y)
-    y.text *= "1"
-    @test x == y
-    @test hash(x) == hash(y)
+    @test x1 != y
+    @test hash(x1) != hash(y)
 end
 
 let
