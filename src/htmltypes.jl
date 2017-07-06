@@ -1,8 +1,5 @@
-using Compat
+abstract type HTMLNode end
 
-@compat abstract type HTMLNode end
-
-# TODO immutable?
 struct HTMLText <: HTMLNode
     parent::HTMLNode
     text::AbstractString
