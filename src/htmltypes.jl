@@ -2,10 +2,8 @@ using Compat
 
 @compat abstract type HTMLNode end
 
-# TODO change all these to use struct / mutable struct in the next release
-
 # TODO immutable?
-type HTMLText <: HTMLNode
+struct HTMLText <: HTMLNode
     parent::HTMLNode
     text::AbstractString
 end
@@ -13,9 +11,9 @@ end
 # convenience method for defining without parent
 HTMLText(text::AbstractString) = HTMLText(NullNode(), text)
 
-type NullNode <: HTMLNode end
+struct NullNode <: HTMLNode end
 
-type HTMLElement{T} <: HTMLNode
+mutable struct HTMLElement{T} <: HTMLNode
     children::Vector{HTMLNode}
     parent::HTMLNode
     attributes::Dict{AbstractString,AbstractString}
@@ -24,11 +22,11 @@ end
 # convenience method for defining an empty element
 HTMLElement(T::Symbol) = HTMLElement{T}(HTMLNode[],NullNode(),Dict{AbstractString,AbstractString}())
 
-type HTMLDocument
+mutable struct HTMLDocument
     doctype::AbstractString
     root::HTMLElement
 end
 
-type InvalidHTMLException <: Exception
+struct InvalidHTMLException <: Exception
     msg::AbstractString
 end

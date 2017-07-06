@@ -1,4 +1,4 @@
 julia 0.5
 Compat 0.23.0
 BinDeps
-AbstractTrees 0.0.4
+AbstractTrees 0.1.0
