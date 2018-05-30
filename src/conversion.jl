@@ -41,7 +41,7 @@ function elem_tag(ge::CGumbo.Element)
     tag = CGumbo.TAGS[ge.tag+1]  # +1 is for 1-based julia indexing
     if tag == :unknown
         ot = ge.original_tag
-        tag = unsafe_string(ot.data, ot.length)[2:end-1] |> Symbol
+        tag = split(unsafe_string(ot.data, ot.length)[2:end-1])[1] |> Symbol
     end
     tag
 end
