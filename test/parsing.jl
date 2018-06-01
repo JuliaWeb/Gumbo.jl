@@ -22,3 +22,12 @@ let
     page = parsehtml("<weird></weird")
     @test tag(page.root[2][1]) == :weird
 end
+
+
+# test that non-standard tags, with attributes, are parsed correctly
+
+let
+    page = Gumbo.parsehtml("<my-element cool></my-element>")
+    @test tag(page.root[2][1]) == Symbol("my-element")
+    @test Gumbo.attrs(page.root[2][1]) == Dict("cool" => "")
+end
