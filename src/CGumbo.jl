@@ -230,6 +230,7 @@ const TAGS = [:HTML,
               :nobr,
               :spacer,
               :tt,
+              :rtc,
               :unknown
               ]
 
