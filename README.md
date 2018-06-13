@@ -1,7 +1,7 @@
 # Gumbo.jl
 
 [![Build Status](https://travis-ci.org/JuliaWeb/Gumbo.jl.svg?branch=master)](https://travis-ci.org/JuliaWeb/Gumbo.jl)
-[![Build status](https://ci.appveyor.com/api/projects/status/4v6s9onnfia8mpeo)](https://ci.appveyor.com/project/JuliaWeb/gumbo-jl)
+[![Build status](https://ci.appveyor.com/api/projects/status/5y5hh4lv0wgw4i12?svg=true)](https://ci.appveyor.com/project/porterjamesj/gumbo-jl)
 [![Gumbo](http://pkg.julialang.org/badges/Gumbo_0.3.svg)](http://pkg.julialang.org/?pkg=Gumbo)
 [![Gumbo](http://pkg.julialang.org/badges/Gumbo_0.4.svg)](http://pkg.julialang.org/?pkg=Gumbo)
 [![Gumbo](http://pkg.julialang.org/badges/Gumbo_0.5.svg)](http://pkg.julialang.org/?pkg=Gumbo)
@@ -39,10 +39,6 @@ Read on for further documentation.
 ```jl
 Pkg.add("Gumbo")
 ```
-
-Installation does involve building the gumbo C library, for which
-you'll need a C++ compiler and GNU make. Building native libraries can
-be flaky, please file an issue if the build script fails for you.
 
 ## Basic usage
 
