@@ -1,12 +1,12 @@
 # Gumbo.jl
 
-[![Build Status](https://travis-ci.org/porterjamesj/Gumbo.jl.svg?branch=master)](https://travis-ci.org/porterjamesj/Gumbo.jl)
-[![Build status](https://ci.appveyor.com/api/projects/status/4v6s9onnfia8mpeo)](https://ci.appveyor.com/project/porterjamesj/gumbo-jl)
+[![Build Status](https://travis-ci.org/JuliaWeb/Gumbo.jl.svg?branch=master)](https://travis-ci.org/JuliaWeb/Gumbo.jl)
+[![Build status](https://ci.appveyor.com/api/projects/status/4v6s9onnfia8mpeo)](https://ci.appveyor.com/project/JuliaWeb/gumbo-jl)
 [![Gumbo](http://pkg.julialang.org/badges/Gumbo_0.3.svg)](http://pkg.julialang.org/?pkg=Gumbo)
 [![Gumbo](http://pkg.julialang.org/badges/Gumbo_0.4.svg)](http://pkg.julialang.org/?pkg=Gumbo)
 [![Gumbo](http://pkg.julialang.org/badges/Gumbo_0.5.svg)](http://pkg.julialang.org/?pkg=Gumbo)
 [![Gumbo](http://pkg.julialang.org/badges/Gumbo_0.6.svg)](http://pkg.julialang.org/?pkg=Gumbo)
-[![codecov.io](http://codecov.io/github/porterjamesj/Gumbo.jl/coverage.svg?branch=master)](http://codecov.io/github/porterjamesj/Gumbo.jl?branch=master)
+[![codecov.io](http://codecov.io/github/JuliaWeb/Gumbo.jl/coverage.svg?branch=master)](http://codecov.io/github/JuliaWeb/Gumbo.jl?branch=master)
 
 Gumbo.jl is a Julia wrapper around
 [Google's gumbo library](https://github.com/google/gumbo-parser) for

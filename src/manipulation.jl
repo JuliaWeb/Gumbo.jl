@@ -14,7 +14,7 @@ getattr(elem::HTMLElement, name) = elem.attributes[name]
 AbstractTrees.children(elem::HTMLElement) = elem.children
 
 # TODO there is a naming conflict here if you want to use both packages
-# (see https://github.com/porterjamesj/Gumbo.jl/issues/31)
+# (see https://github.com/JuliaWeb/Gumbo.jl/issues/31)
 #
 # I still think exporting `children` from Gumbo is the right thing to
 # do, since it's probably more common to be using this package alone
