@@ -15,8 +15,8 @@ macro writeandcheck(line)
     end)
 end
 
-function Base.print{T}(io::IO, elem::HTMLElement{T},
-                       maxlines=Inf, depth=0, written=0; pretty=false)
+function Base.print(io::IO, elem::HTMLElement{T},
+                    maxlines=Inf, depth=0, written=0; pretty=false) where {T}
     opentag = isempty(elem.attributes) ? "<$T" : "<$T "
     for (name,value) in elem.attributes
         opentag *= "$name=\"$value\""

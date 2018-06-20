@@ -34,7 +34,7 @@ function hash(doc::HTMLDocument)
     hash(hash(HTMLDocument),hash(hash(doc.doctype), hash(doc.root)))
 end
 
-function hash{T}(elem::HTMLElement{T})
+function hash(elem::HTMLElement{T}) where {T}
     h = hash(HTMLElement)
     h = hash(h,hash(T))
     h = hash(h,hash(attrs(elem)))
