@@ -1,0 +1,5 @@
+julia 0.7-beta
+AbstractTrees 0.1.0
+BinaryProvider
+SHA
+Compat 0.67.0
