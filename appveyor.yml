@@ -1,13 +1,13 @@
 environment:
   matrix:
-  # The beta currently fails with 
-  # ERROR: LoadError: LoadError: ArgumentError: Package AbstractTrees not found in current path:
-  # - Run `Pkg.add("AbstractTrees")` to install the AbstractTrees package.
-  # but this is fixed in the nightly
-  #- JULIA_URL: "https://julialang-s3.julialang.org/bin/winnt/x64/0.7/julia-0.7.0-beta-win64.exe"
-  #- JULIA_URL: "https://julialang-s3.julialang.org/bin/winnt/x86/0.7/julia-0.7.0-beta-win32.exe"
-  - JULIA_URL: "https://julialangnightlies-s3.julialang.org/bin/winnt/x64/0.7/julia-0.7-latest-win64.exe"
-  - JULIA_URL: "https://julialangnightlies-s3.julialang.org/bin/winnt/x64/0.7/julia-0.7-latest-win32.exe"
+    # The beta currently fails with 
+    # ERROR: LoadError: LoadError: ArgumentError: Package AbstractTrees not found in current path:
+    # - Run `Pkg.add("AbstractTrees")` to install the AbstractTrees package.
+    # but this is fixed in the nightly
+    #- JULIA_URL: "https://julialang-s3.julialang.org/bin/winnt/x64/0.7/julia-0.7.0-beta-win64.exe"
+    #- JULIA_URL: "https://julialang-s3.julialang.org/bin/winnt/x86/0.7/julia-0.7.0-beta-win32.exe"
+    - JULIA_URL: "https://julialangnightlies-s3.julialang.org/bin/winnt/x64/0.7/julia-0.7-latest-win64.exe"
+    - JULIA_URL: "https://julialangnightlies-s3.julialang.org/bin/winnt/x64/0.7/julia-0.7-latest-win32.exe"
 
 install:
   # Download most recent Julia Windows binary
