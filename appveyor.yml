@@ -15,6 +15,10 @@ install:
 build_script:
 # Need to convert from shallow to complete for Pkg.clone to work
   - IF EXIST .git\shallow (git fetch --unshallow)
+  # Pkg.add("AbstractTrees") is necessary to avoid
+  #   ERROR: LoadError: LoadError: ArgumentError: Package AbstractTrees not found in current path
+  # which occurs even though building Gumbo successfully installs AbstractTrees.
+  # This only occurs under Windows, and should be only a temporary workaround.
   - C:\projects\julia\bin\julia -e "versioninfo(); Pkg.add(\"AbstractTrees\"); Pkg.clone(pwd(), \"Gumbo\"); Pkg.build(\"Gumbo\")"
 
 test_script:
