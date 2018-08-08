@@ -36,7 +36,7 @@ function Base.print(io::IO, elem::HTMLElement{T},
 end
 
 prettyprint(io::IO, elem::HTMLElement) = print(io, elem, Inf, pretty=true)
-prettyprint(elem::HTMLElement) = print(STDOUT, elem, pretty=true)
+prettyprint(elem::HTMLElement) = print(stdout, elem, pretty=true)
 
 # TODO maybe query tty_cols for a default?
 function Base.show(io::IO, elem::HTMLElement)
@@ -90,4 +90,4 @@ function Base.print(io::IO, doc::HTMLDocument; pretty=false)
 end
 
 prettyprint(io::IO, doc::HTMLDocument) = Base.print(io, doc, pretty=true)
-prettyprint(doc::HTMLDocument) = prettyprint(STDOUT, doc)
+prettyprint(doc::HTMLDocument) = prettyprint(stdout, doc)
