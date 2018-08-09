@@ -1,3 +1,5 @@
+using Libdl
+
 function parsehtml(input::AbstractString; strict=false)
     result_ptr = ccall((:gumbo_parse,libgumbo),
                        Ptr{CGumbo.Output},
@@ -12,8 +14,8 @@ function parsehtml(input::AbstractString; strict=false)
     gumbo_dl = Libdl.dlopen(libgumbo)
     default_options = Libdl.dlsym(gumbo_dl, :kGumboDefaultOptions)
     ccall((:gumbo_destroy_output,libgumbo),
-          Void,
-          (Ptr{Void}, Ptr{CGumbo.Output}),
+          Cvoid,
+          (Ptr{Cvoid}, Ptr{CGumbo.Output}),
           default_options, result_ptr)
     return doc
 end

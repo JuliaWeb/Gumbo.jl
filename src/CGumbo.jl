@@ -3,24 +3,24 @@ module CGumbo
 # immutable types corresponding to structs from gumbo.h
 # also various enums from gumbo.h
 
-immutable Vector  # Gumbo vector
-    data::Ptr{Ptr{Void}}
+struct Vector  # Gumbo vector
+    data::Ptr{Ptr{Cvoid}}
     length::Cuint
     capacity::Cuint
 end
 
-immutable StringPiece
+struct StringPiece
     data::Ptr{UInt8}
     length::Csize_t
 end
 
-immutable SourcePosition
+struct SourcePosition
     line::Cuint
     column::Cuint
     offset::Cuint
 end
 
-immutable Text
+struct Text
     text::Ptr{UInt8}
     original_text::StringPiece
     start_pos::SourcePosition
@@ -34,7 +34,7 @@ const TEXT = Int32(2)
 const CDATA = Int32(3)
 const WHITESPACE = Int32(4)
 
-immutable Document
+struct Document
     children::Vector
     has_doctype::Bool
     name::Ptr{UInt8}
@@ -43,7 +43,7 @@ immutable Document
     doc_type_quirks_mode::Int32  # enum
 end
 
-immutable Attribute
+struct Attribute
     attr_namespace::Int32  # enum
     name::Ptr{UInt8}
     original_name::StringPiece
@@ -55,7 +55,7 @@ immutable Attribute
     value_end::SourcePosition
 end
 
-immutable Element
+struct Element
     children::Vector
     tag::Int32  # enum
     tag_namespace::Int32  # enum
@@ -66,7 +66,7 @@ immutable Element
     attributes::Vector
 end
 
-immutable Node{T}
+struct Node{T}
     gntype::Int32  # enum
     parent::Ptr{Node}
     index_within_parent::Csize_t
@@ -74,7 +74,7 @@ immutable Node{T}
     v::T
 end
 
-immutable Output
+struct Output
     document::Ptr{Node}
     root::Ptr{Node}
     errors::Vector

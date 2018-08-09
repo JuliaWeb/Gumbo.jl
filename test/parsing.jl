@@ -6,7 +6,7 @@ testdir = dirname(@__FILE__)
 
 let
     page = open("$testdir/fixtures/example.html") do example
-        example |> readstring |> parsehtml
+        read(example, String) |> parsehtml
     end
     @test page.doctype == "html"
     root = page.root

@@ -3,7 +3,8 @@
 import AbstractTrees
 # elements
 
-tag{T}(elem::HTMLElement{T}) = T
+tag(elem::HTMLElement{T}) where {T} = T
+
 
 attrs(elem::HTMLElement) = elem.attributes
 function setattr!(elem::HTMLElement, name::AbstractString, value::AbstractString)
@@ -12,6 +13,7 @@ end
 getattr(elem::HTMLElement, name) = elem.attributes[name]
 
 AbstractTrees.children(elem::HTMLElement) = elem.children
+AbstractTrees.children(elem::HTMLText) = ()
 
 # TODO there is a naming conflict here if you want to use both packages
 # (see https://github.com/JuliaWeb/Gumbo.jl/issues/31)

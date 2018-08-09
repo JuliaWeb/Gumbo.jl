@@ -4,12 +4,12 @@ let
     # TODO this could be done with Quickcheck if we had a way of
     # generating "interesting" HTML documents
     doc = open("$testdir/fixtures/example.html") do example
-        example |> readstring |> parsehtml
+        read(example, String) |> parsehtml
     end
     io = IOBuffer()
     print(io, doc)
     seek(io, 0)
-    newdoc = io |> readstring |> parsehtml
+    newdoc = read(io, String) |> parsehtml
     @test newdoc == doc
 end
 
@@ -21,12 +21,12 @@ tests = [
 for test in tests
     let
         doc = open("$testdir/fixtures/$(test)_input.html") do example
-            example |> readstring |> parsehtml
+            read(example, String) |> parsehtml
         end
         io = IOBuffer()
         print(io, doc.root, pretty=true)
         seek(io, 0)
-        @test readstring(io) ==
-            readstring(open("$testdir/fixtures/$(test)_output.html"))
+        @test read(io, String) ==
+            read(open("$testdir/fixtures/$(test)_output.html"), String)
     end
 end
