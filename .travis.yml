@@ -4,6 +4,7 @@ os:
     - osx
 julia:
     - 0.7
+    - 1.0
     - nightly
 matrix:
   allow_failures:
@@ -12,8 +13,5 @@ matrix:
 notifications:
     email: false
 sudo: false
-script:
-    - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
-    - julia -e 'Pkg.clone(pwd()); Pkg.build("Gumbo"); Pkg.test("Gumbo"; coverage=true)';
 after_success:
     - julia -e 'cd(Pkg.dir("Gumbo")); Pkg.add("Coverage"); using Coverage; Codecov.submit(process_folder())';
