@@ -96,7 +96,7 @@ children of the `HTMLNode` abstract type. The first of these is
 ### `HTMLElement`
 
 ```julia
-type HTMLElement{T} <: HTMLNode
+mutable struct HTMLElement{T} <: HTMLNode
     children::Vector{HTMLNode}
     parent::HTMLNode
     attributes::Dict{String, String}
