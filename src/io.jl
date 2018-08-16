@@ -41,16 +41,13 @@ prettyprint(elem::HTMLElement) = print(STDOUT, elem, pretty=true)
 # TODO maybe query tty_cols for a default?
 function Base.show(io::IO, elem::HTMLElement)
     write(io,summary(elem)*":\n")
-    print(io, elem, 20, pretty=true)
-end
-
-function Base.showall(io::IO, elem::HTMLElement)
-    write(io,summary(elem)*":\n")
-    print(io, elem, Inf, pretty=true)
-end
-
-function Base.showcompact(io::IO, elem::HTMLElement)
-    write(io,summary(elem))
+    if get(io, :compact, false)
+        write(io, summary(elem))
+    elseif get(io, :limit, false)
+        print(io, elem, 20, pretty=true)
+    else
+        print(io, elem, Inf, pretty=true)
+    end
 end
 
 ### IO for Text
@@ -73,12 +70,6 @@ end
 ### io for Document
 
 function Base.show(io::IO, doc::HTMLDocument)
-    write(io, "HTML Document:\n")
-    write(io, "<!DOCTYPE $(doc.doctype)>\n")
-    Base.print(io, doc.root, pretty=true)
-end
-
-function Base.showall(io::IO, doc::HTMLDocument)
     write(io, "HTML Document:\n")
     write(io, "<!DOCTYPE $(doc.doctype)>\n")
     Base.print(io, doc.root, pretty=true)
