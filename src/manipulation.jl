@@ -11,6 +11,8 @@ function setattr!(elem::HTMLElement, name::AbstractString, value::AbstractString
     elem.attributes[name] = value
 end
 getattr(elem::HTMLElement, name) = elem.attributes[name]
+getattr(elem::HTMLElement, name, default) = get(elem.attributes, name, default)
+getattr(f::Function, elem::HTMLElement, name) = get(f, elem.attributes, name)
 
 AbstractTrees.children(elem::HTMLElement) = elem.children
 AbstractTrees.children(elem::HTMLText) = ()
