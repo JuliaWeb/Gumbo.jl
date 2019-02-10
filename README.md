@@ -142,7 +142,9 @@ There are a number of convenience methods for working with `HTMLElement`s:
    return the children array of this element
 
 - `getattr(elem, name)`
-  get the value of attribute `name` or raise a `KeyError`
+  get the value of attribute `name` or raise a `KeyError`. Also
+  supports being called with a default value (`getattr(elem, name,
+  default)`) or function (`getattr(f, elem, name)`).
 
 - `setattr!(elem, name, value)`
   set the value of attribute `name` to `value`
