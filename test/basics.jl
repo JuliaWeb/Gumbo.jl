@@ -15,4 +15,5 @@ let
     @test getattr(elem, "foo") == "bar"
     @test getattr(elem, "foo", "baz") == "bar"
     @test getattr(elem, "bar", "qux") == "qux"
+    @test getattr(() -> "qux", elem, "bar") == "qux"
 end
