@@ -17,9 +17,9 @@ end
 
 function Base.print(io::IO, elem::HTMLElement{T},
                     maxlines=Inf, depth=0, written=0; pretty=false) where {T}
-    opentag = isempty(elem.attributes) ? "<$T" : "<$T "
-    for (name,value) in elem.attributes
-        opentag *= "$name=\"$value\""
+    opentag = "<$T"
+    for (name,value) in sort(collect(elem.attributes), by=x->x.first)
+        opentag *= " $name=\"$value\""
     end
     opentag *= ">"
     closetag = "</$T>"
