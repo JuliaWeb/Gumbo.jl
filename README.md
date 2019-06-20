@@ -60,6 +60,12 @@ parsed, e.g.:
 parsehtml("<h1> Hello, world! </h1>")
 ```
 
+Parsing an HTML file named `filename`can be done using:
+
+```julia
+julia> parsehtml(read(filename, String))
+```
+
 The result of a call to `parsehtml` is an `HTMLDocument`, a type which
 has two fields: `doctype`, which is the doctype of the parsed document
 (this will be the empty string if no doctype is provided), and `root`,
