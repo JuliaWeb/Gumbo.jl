@@ -9,29 +9,26 @@
 
 # equality
 
-import Base: ==, isequal, hash
-
 isequal(x::HTMLDocument, y::HTMLDocument) =
-    isequal(x.doctype,y.doctype) && isequal(x.root,y.root)
+    isequal(x.doctype, y.doctype) && isequal(x.root, y.root)
 
-isequal(x::HTMLText,y::HTMLText) = isequal(x.text, y.text)
+isequal(x::HTMLText, y::HTMLText) = isequal(x.text, y.text)
 
 isequal(x::HTMLElement, y::HTMLElement) =
-    isequal(x.attributes,y.attributes) && isequal(x.children,y.children)
+    isequal(x.attributes, y.attributes) && isequal(x.children, y.children)
 
 ==(x::HTMLDocument, y::HTMLDocument) =
-    ==(x.doctype,y.doctype) && ==(x.root,y.root)
+    x.doctype == y.doctype && x.root == y.root
 
-==(x::HTMLText,y::HTMLText) = ==(x.text, y.text)
+==(x::HTMLText, y::HTMLText) = x.text == y.text
 
 ==(x::HTMLElement, y::HTMLElement) =
-    ==(x.attributes,y.attributes) && ==(x.children,y.children)
-
+    x.attributes == y.attributes && x.children == y.children
 
 # hashing
 
 function hash(doc::HTMLDocument)
-    hash(hash(HTMLDocument),hash(hash(doc.doctype), hash(doc.root)))
+    hash(hash(HTMLDocument), hash(hash(doc.doctype), hash(doc.root)))
 end
 
 function hash(elem::HTMLElement{T}) where {T}

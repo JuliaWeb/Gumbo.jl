@@ -15,7 +15,7 @@ macro writeandcheck(line)
     end)
 end
 
-function Base.print(io::IO, elem::HTMLElement{T},
+function print(io::IO, elem::HTMLElement{T},
                     maxlines=Inf, depth=0, written=0; pretty=false) where {T}
     opentag = "<$T"
     for (name,value) in sort(collect(elem.attributes), by=x->x.first)
@@ -39,7 +39,7 @@ prettyprint(io::IO, elem::HTMLElement) = print(io, elem, Inf, pretty=true)
 prettyprint(elem::HTMLElement) = print(stdout, elem, pretty=true)
 
 # TODO maybe query tty_cols for a default?
-function Base.show(io::IO, elem::HTMLElement)
+function show(io::IO, elem::HTMLElement)
     write(io,summary(elem)*":\n")
     if get(io, :compact, false)
         write(io, summary(elem))
@@ -52,11 +52,11 @@ end
 
 ### IO for Text
 
-function Base.show(io::IO, t::HTMLText)
+function show(io::IO, t::HTMLText)
     write(io,"HTML Text: $(t.text)")
 end
 
-function Base.print(io::IO, node::HTMLText,
+function print(io::IO, node::HTMLText,
                     maxlines=Inf, depth=0, written=0; pretty=false)
     if pretty
         for line in split(strip(text(node)), "\n")
@@ -69,16 +69,16 @@ end
 
 ### io for Document
 
-function Base.show(io::IO, doc::HTMLDocument)
+function show(io::IO, doc::HTMLDocument)
     write(io, "HTML Document:\n")
     write(io, "<!DOCTYPE $(doc.doctype)>\n")
-    Base.print(io, doc.root, pretty=true)
+    print(io, doc.root, pretty=true)
 end
 
-function Base.print(io::IO, doc::HTMLDocument; pretty=false)
+function print(io::IO, doc::HTMLDocument; pretty=false)
     write(io, "<!DOCTYPE $(doc.doctype)>")
-    Base.print(io, doc.root, pretty=pretty)
+    print(io, doc.root, pretty=pretty)
 end
 
-prettyprint(io::IO, doc::HTMLDocument) = Base.print(io, doc, pretty=true)
+prettyprint(io::IO, doc::HTMLDocument) = print(io, doc, pretty=true)
 prettyprint(doc::HTMLDocument) = prettyprint(stdout, doc)

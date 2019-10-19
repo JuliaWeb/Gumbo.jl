@@ -1,0 +1,20 @@
+name = "Gumbo"
+uuid = "708ec375-b3d6-5a57-a7ce-8257bf98657a"
+repo = "https://github.com/JuliaWeb/Gumbo.jl.git"
+version = "0.5.1"
+
+[deps]
+AbstractTrees = "1520ce14-60c1-5f80-bbc7-55ef81b5835c"
+BinaryProvider = "b99e7846-7c00-51b0-8f62-c81ae34c0232"
+Libdl = "8f399da3-3557-5675-b5ff-fb832c97cbdb"
+
+[compat]
+AbstractTrees = "0.2"
+BinaryProvider = "0.5"
+julia = "1"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]

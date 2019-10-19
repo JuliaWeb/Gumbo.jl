@@ -1,8 +1,7 @@
-using Test
-using Gumbo
+using Test, Gumbo, AbstractTrees
+using Gumbo: HTMLNode, NullNode, InvalidHTMLException
 
-include("basics.jl")
-include("comparison.jl")
-include("parsing.jl")
-include("traversal.jl")
-include("io.jl")
+foreach(include,
+        filter(filename -> occursin(r"^\d+_.*\.jl$", filename),
+               readdir(@__DIR__)) |>
+        sort!)

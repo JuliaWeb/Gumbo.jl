@@ -1,7 +1,6 @@
-
 # test for comparisons and hashing
 
-let
+@testset "Comparisons: HTMLText" begin
     x = HTMLText("test")
     y = HTMLText("test")
     x1 = HTMLText("test1")
@@ -10,8 +9,7 @@ let
     @test x1 != y
     @test hash(x1) != hash(y)
 end
-
-let
+@testset "Comparisons: HTMLElement" begin
     x = HTMLElement(:div)
     y = HTMLElement(:div)
     @test x == y
@@ -29,8 +27,7 @@ let
     @test x == y
     @test hash(x) == hash(y)
 end
-
-let
+@testset "Comparisons: HTMLDocument" begin
     x = HTMLDocument("html", HTMLElement(:html))
     y = HTMLDocument("html", HTMLElement(:html))
     @test x == y

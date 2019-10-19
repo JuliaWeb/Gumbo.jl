@@ -80,7 +80,6 @@ struct Output
     errors::Vector
 end
 
-
 const TAGS = [:HTML,
               :head,
               :title,
@@ -233,5 +232,4 @@ const TAGS = [:HTML,
               :rtc,
               :unknown
               ]
-
 end

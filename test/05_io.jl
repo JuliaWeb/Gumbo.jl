@@ -1,5 +1,4 @@
-
-let
+@testset "IO: Basic" begin
     # roundtrip test
     # TODO this could be done with Quickcheck if we had a way of
     # generating "interesting" HTML documents
@@ -12,14 +11,13 @@ let
     newdoc = read(io, String) |> parsehtml
     @test newdoc == doc
 end
-
 tests = [
     "30",  # regression test for issue #30
     "multitext",  # regression test for multiple HTMLText in one HTMLElement
     "varied",  # relatively complex example
 ]
 for test in tests
-    let
+    @testset "IO: $test" begin
         doc = open("$testdir/fixtures/$(test)_input.html") do example
             read(example, String) |> parsehtml
         end
