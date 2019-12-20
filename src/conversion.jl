@@ -1,5 +1,3 @@
-using Libdl
-
 function parsehtml(input::AbstractString; strict=false)
     result_ptr = ccall((:gumbo_parse,libgumbo),
                        Ptr{CGumbo.Output},
@@ -11,8 +9,7 @@ function parsehtml(input::AbstractString; strict=false)
         throw(InvalidHTMLException("input html was invalid"))
     end
     doc = document_from_gumbo(goutput)
-    gumbo_dl = Libdl.dlopen(libgumbo)
-    default_options = Libdl.dlsym(gumbo_dl, :kGumboDefaultOptions)
+    default_options = dlsym(Gumbo_jll.libgumbo_handle, :kGumboDefaultOptions)
     ccall((:gumbo_destroy_output,libgumbo),
           Cvoid,
           (Ptr{Cvoid}, Ptr{CGumbo.Output}),
