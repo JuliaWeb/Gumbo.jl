@@ -32,7 +32,7 @@ const DOCUMENT = Int32(0)
 const ELEMENT = Int32(1)
 const TEXT = Int32(2)
 const CDATA = Int32(3)
-const WHITESPACE = Int32(4)
+const WHITESPACE = Int32(5)
 
 struct Document
     children::Vector
