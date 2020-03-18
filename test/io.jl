@@ -17,14 +17,15 @@ tests = [
     "30",  # regression test for issue #30
     "multitext",  # regression test for multiple HTMLText in one HTMLElement
     "varied",  # relatively complex example
+    "whitespace",  # whitespace sensitive
 ]
 for test in tests
     let
         doc = open("$testdir/fixtures/$(test)_input.html") do example
-            read(example, String) |> parsehtml
+            parsehtml(read(example, String), preserve_whitespace = test=="whitespace")
         end
         io = IOBuffer()
-        print(io, doc.root, pretty=true)
+        print(io, doc.root, pretty=test != "whitespace")
         seek(io, 0)
         ground_truth = read(open("$testdir/fixtures/$(test)_output.html"), String)
         # Eliminate possible line ending issues

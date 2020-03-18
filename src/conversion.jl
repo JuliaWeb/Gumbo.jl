@@ -1,4 +1,6 @@
-function parsehtml(input::AbstractString; strict=false)
+using Libdl
+
+function parsehtml(input::AbstractString; strict=false, preserve_whitespace=false)
     result_ptr = ccall((:gumbo_parse,libgumbo),
                        Ptr{CGumbo.Output},
                        (Cstring,),
@@ -8,8 +10,9 @@ function parsehtml(input::AbstractString; strict=false)
     if strict && goutput.errors.length > 0
         throw(InvalidHTMLException("input html was invalid"))
     end
-    doc = document_from_gumbo(goutput)
-    default_options = dlsym(Gumbo_jll.libgumbo_handle, :kGumboDefaultOptions)
+    doc = document_from_gumbo(goutput, preserve_whitespace)
+    default_options = Libdl.dlsym(gumbo_dl, :kGumboDefaultOptions)
+
     ccall((:gumbo_destroy_output,libgumbo),
           Cvoid,
           (Ptr{Cvoid}, Ptr{CGumbo.Output}),
@@ -45,34 +48,34 @@ function elem_tag(ge::CGumbo.Element)
     tag
 end
 
-function gumbo_to_jl(parent::HTMLNode, ge::CGumbo.Element)
+function gumbo_to_jl(parent::HTMLNode, ge::CGumbo.Element, preserve_whitespace)
     tag = elem_tag(ge)
     attrs = attributes(gvector_to_jl(CGumbo.Attribute,ge.attributes))
     children = HTMLNode[]
     res = HTMLElement{tag}(children, parent, attrs)
     for childptr in gvector_to_jl(CGumbo.Node{Int},ge.children)
-        node = load_node(childptr)
+        node = load_node(childptr, preserve_whitespace)
         if in(typeof(node).parameters[1], [CGumbo.Element, CGumbo.Text])
-            push!(children, gumbo_to_jl(res, node.v))
+            push!(children, gumbo_to_jl(res, node.v, preserve_whitespace))
         end
     end
     res
 end
 
 
-function gumbo_to_jl(parent::HTMLNode, gt::CGumbo.Text)
+function gumbo_to_jl(parent::HTMLNode, gt::CGumbo.Text, preserve_whitespace)
     HTMLText(parent, unsafe_string(gt.text))
 end
 
 # this is a fallback method that should only be called to construct
 # the root of a tree
-gumbo_to_jl(ge::CGumbo.Element) = gumbo_to_jl(NullNode(), ge)
+gumbo_to_jl(ge::CGumbo.Element, preserve_whitespace) = gumbo_to_jl(NullNode(), ge, preserve_whitespace)
 
 # load a GumboNode struct into memory as the appropriate Julia type
 # this involves loading it once as a CGumbo.Node{Int} in order to
 # figure out what the correct type actually is, and then reloading it as
 # that type
-function load_node(nodeptr::Ptr)
+function load_node(nodeptr::Ptr, preserve_whitespace=false)
     precursor = unsafe_load(reinterpret(Ptr{CGumbo.Node{Int}},nodeptr))
     # TODO clean this up with a Dict in the CGumbo module
     correctptr = if precursor.gntype == CGumbo.ELEMENT
@@ -81,6 +84,8 @@ function load_node(nodeptr::Ptr)
         reinterpret(Ptr{CGumbo.Node{CGumbo.Text}},nodeptr)
     elseif precursor.gntype == CGumbo.DOCUMENT
         reinterpret(Ptr{CGumbo.Node{CGumbo.Document}},nodeptr)
+    elseif preserve_whitespace && precursor.gntype == CGumbo.WHITESPACE
+        reinterpret(Ptr{CGumbo.Node{CGumbo.Text}},nodeptr)
     else
         # TODO this is super sketchy and should realistically be an
         # error
@@ -90,12 +95,12 @@ function load_node(nodeptr::Ptr)
 end
 
 # transform gumbo output into Julia data
-function document_from_gumbo(goutput::CGumbo.Output)
+function document_from_gumbo(goutput::CGumbo.Output, preserve_whitespace)
     # TODO convert some of these typeasserts to better error messages?
-    gnode::CGumbo.Node{CGumbo.Document} = load_node(goutput.document)
+    gnode::CGumbo.Node{CGumbo.Document} = load_node(goutput.document, preserve_whitespace)
     gdoc = gnode.v
     doctype = unsafe_string(gdoc.name)
-    groot::CGumbo.Node{CGumbo.Element} = load_node(goutput.root)
-    root = gumbo_to_jl(groot.v)  # already an element
+    groot::CGumbo.Node{CGumbo.Element} = load_node(goutput.root, preserve_whitespace)
+    root = gumbo_to_jl(groot.v, preserve_whitespace)  # already an element
     HTMLDocument(doctype, root)
 end

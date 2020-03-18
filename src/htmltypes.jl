@@ -1,6 +1,6 @@
 abstract type HTMLNode end
 
-struct HTMLText <: HTMLNode
+mutable struct HTMLText <: HTMLNode
     parent::HTMLNode
     text::AbstractString
 end
