@@ -11,7 +11,7 @@ function parsehtml(input::AbstractString; strict=false, preserve_whitespace=fals
         throw(InvalidHTMLException("input html was invalid"))
     end
     doc = document_from_gumbo(goutput, preserve_whitespace)
-    default_options = Libdl.dlsym(gumbo_dl, :kGumboDefaultOptions)
+    default_options = Libdl.dlsym(Gumbo_jll.libgumbo_handle, :kGumboDefaultOptions)
 
     ccall((:gumbo_destroy_output,libgumbo),
           Cvoid,
