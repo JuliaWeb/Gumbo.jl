@@ -27,7 +27,9 @@ for test in tests
         io = IOBuffer()
         print(io, doc.root, pretty=test != "whitespace")
         seek(io, 0)
-        @test read(io, String) ==
-            read(open("$testdir/fixtures/$(test)_output.html"), String)
+        ground_truth = read(open("$testdir/fixtures/$(test)_output.html"), String)
+        # Eliminate possible line ending issues
+        ground_truth = replace(ground_truth, "\r\n" => "\n")
+        @test read(io, String) == ground_truth
     end
 end
