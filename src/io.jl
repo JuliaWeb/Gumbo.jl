@@ -42,7 +42,7 @@ function substitute_attribute_entities(str)
     return str
 end
 
-function Base.print(io::IO, elem::HTMLElement{T}; pretty = false, depth = 0) where {T}
+function Base.print(io::IO, elem::HTMLElement{T}; pretty = false, depth = 0, substitution = true) where {T}
     empty_tag = T in EMPTY_TAGS
     ws_relevant = T in RELEVANT_WHITESPACE
     has_children = !isempty(elem.children)
@@ -62,7 +62,7 @@ function Base.print(io::IO, elem::HTMLElement{T}; pretty = false, depth = 0) whe
 
     if !empty_tag
         for child in elem.children
-            print(io, child; pretty = pretty_children, depth = depth + 1)
+            print(io, child; pretty = pretty_children, depth = depth + 1, substitution = substitution && !in(T, NO_ENTITY_SUBSTITUTION))
         end
 
         pretty && has_children && print(io, ' '^(2*depth))
@@ -73,8 +73,8 @@ function Base.print(io::IO, elem::HTMLElement{T}; pretty = false, depth = 0) whe
     return nothing
 end
 
-function Base.print(io::IO, node::HTMLText; pretty = false, depth = 0)
-    substitutor = element_type(node.parent) in NO_ENTITY_SUBSTITUTION ? identity : substitute_text_entities
+function Base.print(io::IO, node::HTMLText; pretty = false, depth = 0, substitution = true)
+    substitutor = substitution ? substitute_text_entities : identity
 
     if !pretty
         print(io, substitutor(node.text))

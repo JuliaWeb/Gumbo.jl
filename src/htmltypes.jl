@@ -19,9 +19,6 @@ end
 # convenience method for defining an empty element
 HTMLElement(T::Symbol) = HTMLElement{T}(HTMLNode[],NullNode(),Dict{AbstractString,AbstractString}())
 
-element_type(::HTMLElement{T}) where {T} = T
-element_type(::Any) = Symbol("")
-
 mutable struct HTMLDocument
     doctype::AbstractString
     root::HTMLElement
