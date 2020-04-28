@@ -1,84 +1,126 @@
-## IO for element
+const NO_ENTITY_SUBSTITUTION = Set([:script, :style])
+const EMPTY_TAGS = Set([
+    :area,
+    :base,
+    :basefont,
+    :bgsound,
+    :br,
+    :command,
+    :col,
+    :embed,
+    Symbol("event-source"),
+    :frame,
+    :hr,
+    :image,
+    :img,
+    :input,
+    :keygen,
+    :link,
+    :menuitem,
+    :meta,
+    :param,
+    :source,
+    :spacer,
+    :track,
+    :wbr
+])
+const RELEVANT_WHITESPACE = Set([:pre, :textarea, :script, :style])
 
-# this is to avoid copy and pasting in print below, don't use this
-# anywhere else. gnarly hack, the variable names here have to
-# correspond to those in print
-macro writeandcheck(line)
-    esc(quote
-        if pretty
-            write(io, repeat("  ",depth)*$line*"\n")
-        else
-            write(io, $line)
-        end
-        written += 1
-        if written == maxlines return end
-    end)
+function substitute_text_entities(str)
+    str = replace(str, "&" => "&amp;")
+    str = replace(str, "<" => "&lt;")
+    str = replace(str, ">" => "&gt;")
+
+    return str
 end
 
-function Base.print(io::IO, elem::HTMLElement{T},
-                    maxlines=Inf, depth=0, written=0; pretty=false) where {T}
-    opentag = "<$T"
-    for (name,value) in sort(collect(elem.attributes), by=x->x.first)
-        opentag *= " $name=\"$value\""
+function substitute_attribute_entities(str)
+    str = substitute_text_entities(str)
+    str = replace(str, "\""=> "&quot;")
+    str = replace(str, "'" => "&#39;")
+
+    return str
+end
+
+function Base.print(io::IO, elem::HTMLElement{T}; pretty = false, depth = 0) where {T}
+    empty_tag = T in EMPTY_TAGS
+    ws_relevant = T in RELEVANT_WHITESPACE
+    has_children = !isempty(elem.children)
+
+    pretty_children = pretty && !ws_relevant
+
+    pretty && print(io, ' '^(2*depth))
+    print(io, '<', T)
+    for (name, value) in sort(collect(elem.attributes), by = first)
+        print(io, ' ', name, "=\"", substitute_attribute_entities(value), '"')
     end
-    opentag *= ">"
-    closetag = "</$T>"
-    # TODO make inline elements printed all on one line
-    if isempty(children(elem))
-        @writeandcheck(opentag * closetag)
-    else
-        @writeandcheck(opentag)
+    if empty_tag
+        print(io, '/')
+    end
+    print(io, '>')
+    pretty_children && has_children && print(io, '\n')
+
+    if !empty_tag
         for child in elem.children
-            print(io,child,maxlines,depth+1,written,pretty=pretty)
+            print(io, child; pretty = pretty_children, depth = depth + 1)
         end
-        @writeandcheck(closetag)
+
+        pretty && has_children && print(io, ' '^(2*depth))
+        print(io, "</", T, '>')
+    end
+    pretty && print(io, '\n')
+
+    return nothing
+end
+
+function Base.print(io::IO, node::HTMLText; pretty = false, depth = 0)
+    if !pretty
+        print(io, substitute_text_entities(node.text))
+        return nothing
+    end
+
+    for line in strip.(split(node.text, '\n'))
+        isempty(line) && continue
+        print(io, ' '^(2*depth), substitute_text_entities(line), '\n')
     end
 end
 
-prettyprint(io::IO, elem::HTMLElement) = print(io, elem, Inf, pretty=true)
-prettyprint(elem::HTMLElement) = print(stdout, elem, pretty=true)
+function Base.print(io::IO, doc::HTMLDocument; pretty = false)
+    write(io, "<!DOCTYPE ", doc.doctype, ">")
+    Base.print(io, doc.root, pretty = pretty)
+end
 
-# TODO maybe query tty_cols for a default?
+prettyprint(io::IO, doc::HTMLDocument) = Base.print(io, doc, pretty = true)
+prettyprint(doc::HTMLDocument) = prettyprint(stdout, doc)
+prettyprint(io::IO, elem::HTMLElement) = print(io, elem, pretty = true)
+prettyprint(elem::HTMLElement) = print(stdout, elem, pretty = true)
+
 function Base.show(io::IO, elem::HTMLElement)
-    write(io,summary(elem)*":\n")
+    write(io, summary(elem), ":")
     if get(io, :compact, false)
-        write(io, summary(elem))
+        return
     elseif get(io, :limit, false)
-        print(io, elem, 20, pretty=true)
+        buf = IOBuffer()
+        print(buf, elem, pretty = true)
+        for (i, line) in enumerate(split(String(take!(buf)), '\n'))
+            if i > 20
+                println(io, "...")
+                return
+            end
+
+            println(line)
+        end
     else
-        print(io, elem, Inf, pretty=true)
+        print(io, elem, pretty=true)
     end
 end
-
-### IO for Text
 
 function Base.show(io::IO, t::HTMLText)
-    write(io,"HTML Text: $(t.text)")
+    write(io,"HTML Text: `", t.text, '`')
 end
-
-function Base.print(io::IO, node::HTMLText,
-                    maxlines=Inf, depth=0, written=0; pretty=false)
-    if pretty
-        for line in split(strip(text(node)), "\n")
-            @writeandcheck(line)
-        end
-    else
-        @writeandcheck(text(node))
-    end
-end
-
-### io for Document
 
 function Base.show(io::IO, doc::HTMLDocument)
     write(io, "HTML Document:\n")
-    write(io, "<!DOCTYPE $(doc.doctype)>\n")
-    Base.print(io, doc.root, pretty=true)
+    write(io, "<!DOCTYPE ", doc.doctype, ">\n")
+    Base.show(io, doc.root)
 end
-
-function Base.print(io::IO, doc::HTMLDocument; pretty=false)
-    write(io, "<!DOCTYPE $(doc.doctype)>")
-    Base.print(io, doc.root, pretty=pretty)
-end
-
-prettyprint(io::IO, doc::HTMLDocument) = Base.print(io, doc, pretty=true)
-prettyprint(doc::HTMLDocument) = prettyprint(stdout, doc)
