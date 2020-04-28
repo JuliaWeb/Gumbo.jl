@@ -74,14 +74,16 @@ function Base.print(io::IO, elem::HTMLElement{T}; pretty = false, depth = 0) whe
 end
 
 function Base.print(io::IO, node::HTMLText; pretty = false, depth = 0)
+    substitutor = element_type(node.parent) in NO_ENTITY_SUBSTITUTION ? identity : substitute_text_entities
+
     if !pretty
-        print(io, substitute_text_entities(node.text))
+        print(io, substitutor(node.text))
         return nothing
     end
 
     for line in strip.(split(node.text, '\n'))
         isempty(line) && continue
-        print(io, ' '^(2*depth), substitute_text_entities(line), '\n')
+        print(io, ' '^(2*depth), substitutor(line), '\n')
     end
 end
 
