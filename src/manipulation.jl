@@ -13,6 +13,8 @@ end
 getattr(elem::HTMLElement, name) = elem.attributes[name]
 getattr(elem::HTMLElement, name, default) = get(elem.attributes, name, default)
 getattr(f::Function, elem::HTMLElement, name) = get(f, elem.attributes, name)
+hasattr(elem::HTMLElement, name) = name in keys(attrs(elem))
+
 
 AbstractTrees.children(elem::HTMLElement) = elem.children
 AbstractTrees.children(elem::HTMLText) = ()
