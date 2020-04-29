@@ -37,3 +37,14 @@ Base.push!(elem::HTMLElement,val) = push!(elem.children, val)
 # text
 
 text(t::HTMLText) = t.text
+
+function text(el::HTMLElement)
+    io = IOBuffer()
+    for c in AbstractTrees.PreOrderDFS(el)
+        if c isa HTMLText
+            print(io, c.text, ' ')
+        end
+    end
+
+    return strip(String(take!(io)))
+end
