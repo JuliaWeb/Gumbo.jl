@@ -13,6 +13,8 @@ end
 getattr(elem::HTMLElement, name) = elem.attributes[name]
 getattr(elem::HTMLElement, name, default) = get(elem.attributes, name, default)
 getattr(f::Function, elem::HTMLElement, name) = get(f, elem.attributes, name)
+hasattr(elem::HTMLElement, name) = name in keys(attrs(elem))
+
 
 AbstractTrees.children(elem::HTMLElement) = elem.children
 AbstractTrees.children(elem::HTMLText) = ()
@@ -35,3 +37,14 @@ Base.push!(elem::HTMLElement,val) = push!(elem.children, val)
 # text
 
 text(t::HTMLText) = t.text
+
+function text(el::HTMLElement)
+    io = IOBuffer()
+    for c in AbstractTrees.PreOrderDFS(el)
+        if c isa HTMLText
+            print(io, c.text, ' ')
+        end
+    end
+
+    return strip(String(take!(io)))
+end

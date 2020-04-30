@@ -110,7 +110,7 @@ function Base.show(io::IO, elem::HTMLElement)
                 return
             end
 
-            println(line)
+            println(io, line)
         end
     else
         print(io, elem, pretty=true)
