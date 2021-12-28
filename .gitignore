@@ -4,3 +4,4 @@ deps/downloads
 deps/src
 deps/deps.jl
 deps/build.log
+Manifest.toml
