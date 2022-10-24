@@ -53,6 +53,7 @@ function gumbo_to_jl(parent::HTMLNode, ge::CGumbo.Element, preserve_whitespace)
     attrs = attributes(gvector_to_jl(CGumbo.Attribute,ge.attributes))
     children = HTMLNode[]
     res = HTMLElement{tag}(children, parent, attrs)
+    preserve_whitespace = tag in RELEVANT_WHITESPACE || preserve_whitespace
     for childptr in gvector_to_jl(CGumbo.Node{Int},ge.children)
         node = load_node(childptr, preserve_whitespace)
         if in(typeof(node).parameters[1], [CGumbo.Element, CGumbo.Text])
