@@ -18,6 +18,7 @@ tests = [
     "multitext",  # regression test for multiple HTMLText in one HTMLElement
     "varied",  # relatively complex example
     "whitespace",  # whitespace sensitive
+    "whitespace2",  # whitespace sensitive
 ]
 @testset for test in tests
     let
