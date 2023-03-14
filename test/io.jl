@@ -19,11 +19,12 @@ tests = [
     "varied",  # relatively complex example
     "whitespace",  # whitespace sensitive
     "whitespace2",  # whitespace sensitive
+    "template",  # preserve template
 ]
 @testset for test in tests
     let
         doc = open("$testdir/fixtures/$(test)_input.html") do example
-            parsehtml(read(example, String), preserve_whitespace = (test == "whitespace"))
+            parsehtml(read(example, String), preserve_whitespace = (test == "whitespace"), preserve_template = (test == "template"))
         end
         io = IOBuffer()
         print(io, doc.root, pretty = (test != "whitespace"))
