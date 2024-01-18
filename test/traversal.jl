@@ -31,6 +31,14 @@ let res = Any[]
     @assert tag(res[3]) == :body
     @assert tag(res[4]) == :p
     @assert text(last(res)) == "c"
+    @assert last(res).index_within_parent == 3
+    @assert AbstractTrees.parent(res[4]) === res[3]
+    @assert isnothing(AbstractTrees.parent(res[1]))
+    @assert tag(prevsibling(last(res))) == :strong
+    @assert nextsibling(prevsibling(last(res))) === last(res)
+    @assert isnothing(nextsibling(last(res)))
+    @assert isnothing(prevsibling(res[4]))
+    @assert AbstractTrees.isroot(res[1])
 end
 
 let res = Any[]
