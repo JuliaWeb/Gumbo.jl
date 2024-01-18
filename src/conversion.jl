@@ -48,29 +48,31 @@ function elem_tag(ge::CGumbo.Element)
     tag
 end
 
-function gumbo_to_jl(parent::HTMLNode, ge::CGumbo.Element, preserve_whitespace, preserve_template)
+function gumbo_to_jl(parent::HTMLNode, ge::CGumbo.Element, index::Integer, preserve_whitespace, preserve_template)
     tag = elem_tag(ge)
     attrs = attributes(gvector_to_jl(CGumbo.Attribute,ge.attributes))
     children = HTMLNode[]
-    res = HTMLElement{tag}(children, parent, attrs)
+    res = HTMLElement{tag}(children, parent, index, attrs)
     preserve_whitespace = tag in RELEVANT_WHITESPACE || preserve_whitespace
+    child_index = 1
     for childptr in gvector_to_jl(CGumbo.Node{Int},ge.children)
         node = load_node(childptr, preserve_whitespace, preserve_template)
         if in(typeof(node).parameters[1], [CGumbo.Element, CGumbo.Text])
-            push!(children, gumbo_to_jl(res, node.v, preserve_whitespace, preserve_template))
+            push!(children, gumbo_to_jl(res, node.v, child_index, preserve_whitespace, preserve_template))
+            child_index += 1
         end
     end
     res
 end
 
 
-function gumbo_to_jl(parent::HTMLNode, gt::CGumbo.Text, preserve_whitespace, preserve_template)
-    HTMLText(parent, unsafe_string(gt.text))
+function gumbo_to_jl(parent::HTMLNode, gt::CGumbo.Text, index::Integer, preserve_whitespace, preserve_template)
+    HTMLText(parent, index, unsafe_string(gt.text))
 end
 
 # this is a fallback method that should only be called to construct
 # the root of a tree
-gumbo_to_jl(ge::CGumbo.Element, preserve_whitespace, preserve_template) = gumbo_to_jl(NullNode(), ge, preserve_whitespace, preserve_template)
+gumbo_to_jl(ge::CGumbo.Element, preserve_whitespace, preserve_template) = gumbo_to_jl(NullNode(), ge, 1, preserve_whitespace, preserve_template)
 
 # load a GumboNode struct into memory as the appropriate Julia type
 # this involves loading it once as a CGumbo.Node{Int} in order to
