@@ -3,8 +3,11 @@
 [![version](https://juliahub.com/docs/Gumbo/version.svg)](https://juliahub.com/ui/Packages/Gumbo/mllB2) [![Build Status](https://travis-ci.org/JuliaWeb/Gumbo.jl.svg?branch=master)](https://travis-ci.org/JuliaWeb/Gumbo.jl) [![codecov.io](http://codecov.io/github/JuliaWeb/Gumbo.jl/coverage.svg?branch=master)](http://codecov.io/github/JuliaWeb/Gumbo.jl?branch=master) [![pkgeval](https://juliahub.com/docs/Gumbo/pkgeval.svg)](https://juliahub.com/ui/Packages/Gumbo/mllB2) [![deps](https://juliahub.com/docs/Gumbo/deps.svg)](https://juliahub.com/ui/Packages/Gumbo/mllB2?t=2)
 
 Gumbo.jl is a Julia wrapper around
-[Google's gumbo library](https://github.com/google/gumbo-parser) for
+[the gumbo library](https://github.com/google/gumbo-parser) for
 parsing HTML.
+
+> [!WARNING]  
+> The underlying C library is currently unmaintained. Use at your own risk.
 
 Getting started is very easy:
 
