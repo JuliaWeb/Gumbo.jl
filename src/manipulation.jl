@@ -42,7 +42,7 @@ function text(el::HTMLElement)
     io = IOBuffer()
     for c in AbstractTrees.PreOrderDFS(el)
         if c isa HTMLText
-            print(io, c.text, ' ')
+            print(io, c.text)
         end
     end
 
