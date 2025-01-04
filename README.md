@@ -249,6 +249,8 @@ span
 julia>
 ```
 
+You can also use additional functions provided by the `AbstractTrees` interface, eg. `nextsibling`.
+
 ## TODOS
 
 - support CDATA
